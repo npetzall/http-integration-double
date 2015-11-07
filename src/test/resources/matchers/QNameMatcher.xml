@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<exchange xmlns="http://npetzall/hid">
+    <request>
+        <reverse exists="true">
+            <message>npetzall</message>
+        </reverse>
+    </request>
+    <response>
+        <result>llaztep</result>
+    </response>
+</exchange>

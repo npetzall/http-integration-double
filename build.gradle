@@ -1,0 +1,69 @@
+group 'npetzall.hid'
+version '0.0.1'
+
+apply plugin: 'java'
+apply plugin: 'findbugs'
+apply plugin: 'jdepend'
+apply plugin: 'pmd'
+apply plugin: "jacoco"
+
+sourceCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:2.1.0'
+}
+
+findbugs {
+    toolVersion = "3.0.1"
+    ignoreFailures = true
+    effort = "max"
+    reportLevel = "low"
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+task jdependMainReport(dependsOn: jdependMain, group: 'verification', description: 'Generates a HTML report after executing jdepend checks.') << {
+    ant.xslt(
+            in: "$reporting.baseDir/jdepend/main.xml",
+            style: "$rootDir/conf/jdepend/jdepend-report.xslt",
+            out:"$reporting.baseDir/jdepend/main.html")
+}
+
+pmd {
+    toolVersion = "5.0.4"
+    sourceSets = [sourceSets.main]
+    ignoreFailures = true
+    ruleSets = []
+    ruleSetFiles = files("$rootDir/conf/pmd/pmd-rulesets.xml")
+}
+
+/*test {
+    dependsOn += ['jacocoTestReport']
+}*/
+
+test.finalizedBy jacocoTestReport
+
+check {
+    dependsOn += ['jdependMainReport']
+}
+
+tasks.withType(Pmd) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.8'
+}
