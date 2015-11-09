@@ -29,7 +29,7 @@ public class HIDExchangeTest {
     public void addResponse() throws IOException {
         HIDExchange hidExchange = HIDExchange.newExchange()
                 .response(HIDStaticResource.fromString("Text"));
-        String text = new String(TestUtil.readInputStreamToByteArray(hidExchange.getResponse().getInputStream()), StandardCharsets.UTF_8);
+        String text = new String(TestUtil.readInputStreamToByteArray(hidExchange.getResponse().getInputStream(null)), StandardCharsets.UTF_8);
         assertThat(text).isEqualTo("Text");
     }
 

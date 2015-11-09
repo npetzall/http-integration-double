@@ -19,14 +19,14 @@ public class HIDStaticResourceTest {
 
     @Test
     public void withStringDefaultEncoding() throws IOException {
-        InputStream in = HIDStaticResource.fromString(TEST_STRING).getInputStream();
+        InputStream in = HIDStaticResource.fromString(TEST_STRING).getInputStream(null);
         byte[] data = TestUtil.readInputStreamToByteArray(in);
         assertThat(new String(data, HIDStaticResource.DEFAULT_CHARSET)).isEqualTo(TEST_STRING);
     }
 
     @Test
     public void withStringASCII() throws IOException {
-        InputStream in = HIDStaticResource.fromString(TEST_STRING, StandardCharsets.US_ASCII).getInputStream();
+        InputStream in = HIDStaticResource.fromString(TEST_STRING, StandardCharsets.US_ASCII).getInputStream(null);
         byte[] data = TestUtil.readInputStreamToByteArray(in);
         assertThat(new String(data, StandardCharsets.US_ASCII)).isEqualTo(TEST_STRING);
     }
@@ -34,7 +34,7 @@ public class HIDStaticResourceTest {
     @Test
     public void withInputStream() throws IOException {
         InputStream in = HIDStaticResource.fromInputStream(getClass().getResourceAsStream("/responses/SimpleResponse.xml"))
-                .getInputStream();
+                .getInputStream(null);
         byte[] dataFromHIDStaticResource = TestUtil.readInputStreamToByteArray(in);
         byte[] expected = TestUtil.readInputStreamToByteArray(TestUtil.getResourceStream("/responses/SimpleResponse.xml"));
         assertThat(dataFromHIDStaticResource).containsExactly(expected);
@@ -42,7 +42,7 @@ public class HIDStaticResourceTest {
 
     @Test
     public void withFile() throws IOException {
-        InputStream in = HIDStaticResource.fromFile("src/test/resources/responses/SimpleResponse.xml").getInputStream();
+        InputStream in = HIDStaticResource.fromFile("src/test/resources/responses/SimpleResponse.xml").getInputStream(null);
         byte[] dataFromHIDStaticResource = TestUtil.readInputStreamToByteArray(in);
         byte[] expected = TestUtil.readInputStreamToByteArray(new FileInputStream("src/test/resources/responses/SimpleResponse.xml"));
         assertThat(dataFromHIDStaticResource).containsExactly(expected);

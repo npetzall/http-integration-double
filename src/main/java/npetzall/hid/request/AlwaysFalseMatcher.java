@@ -3,11 +3,11 @@ package npetzall.hid.request;
 import npetzall.hid.api.request.HIDMatcher;
 
 /**
- * Created by nosse on 2015-11-06.
+ * Created by nosse on 2015-11-09.
  */
-public class AlwaysTrueMatcher  implements HIDMatcher {
+public class AlwaysFalseMatcher   implements HIDMatcher {
     @Override
     public boolean matches(HIDRequest hidRequest) {
-        return true;
+        return false;
     }
 }

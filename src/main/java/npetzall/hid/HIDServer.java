@@ -7,7 +7,7 @@ import java.net.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class HID {
+public class HIDServer {
 
     private final HIDConfiguration hidConfiguration;
     private HttpServer httpServer;
@@ -15,7 +15,7 @@ public class HID {
 
     private final Set<String> addedContexts = new HashSet<>();
 
-    public HID (final HIDConfiguration hidConfiguration) {
+    public HIDServer(final HIDConfiguration hidConfiguration) {
         this.hidConfiguration = hidConfiguration;
     }
 

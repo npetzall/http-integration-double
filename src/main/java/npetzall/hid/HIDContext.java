@@ -2,13 +2,10 @@ package npetzall.hid;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import npetzall.hid.io.SlowOutputStreamWriter;
+import npetzall.hid.exchange.HIDExchangeContextImpl;
 import npetzall.hid.request.HIDRequest;
-import npetzall.hid.response.HIDResponse;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,17 +37,20 @@ public class HIDContext implements HttpHandler {
     @Override
     public void handle(final HttpExchange httpExchange) throws IOException {
         final long exchangeStarted = System.currentTimeMillis();
+        HIDExchangeContextImpl exchangeContext = new HIDExchangeContextImpl();
         final HIDRequest hidRequest = new HIDRequest(httpExchange);
         for(final HIDExchange exchange: hidExchanges) {
             if (exchange.matches(hidRequest)) {
-                sendResponse(httpExchange, exchangeStarted, exchange.getResponse());
+                exchange.extractData(exchangeContext);
+                exchange.sendResponse(exchangeContext, httpExchange);
+                //sendResponse(httpExchange, exchangeContext, exchange.getResponse());
             }
         }
     }
-
-    private void sendResponse(HttpExchange httpExchange, long exchangeStarted, HIDResponse response) throws IOException {
+    /*
+    private void sendResponse(HttpExchange httpExchange, HIDExchangeContextImpl exchangeContext, HIDResponseDecorator response) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        final InputStream responseIn = response.getInputStream();
+        final InputStream responseIn = response.getInputStream(exchangeContext);
         final byte[] buff = new byte[4096];
         int read;
         while((read = responseIn.read(buff)) != -1) {
@@ -77,4 +77,5 @@ public class HIDContext implements HttpHandler {
         } catch (InterruptedException e) {
         }
     }
+    */
 }

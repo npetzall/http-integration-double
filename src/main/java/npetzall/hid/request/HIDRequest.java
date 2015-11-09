@@ -13,12 +13,10 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.Arrays;
 
-/**
- * Created by nosse on 2015-11-05.
- */
+//TODO Abstract the HttpExchange even more and move to API and make it easier to use in tests
 public class HIDRequest {
 
-    private HttpExchange httpExchange;
+    private final HttpExchange httpExchange;
 
     private byte[] request = new byte[0];
 

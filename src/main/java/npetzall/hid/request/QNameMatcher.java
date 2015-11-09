@@ -1,5 +1,7 @@
 package npetzall.hid.request;
 
+import npetzall.hid.api.request.HIDMatcher;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;

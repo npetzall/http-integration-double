@@ -11,31 +11,31 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HIDTest {
+public class HIDServerTest {
 
     @Test
     public void doubleHIDs() {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
         hidConfiguration.firstPort(1234).lastPort(1243);
-        HID hidOne = new HID(hidConfiguration);
-        hidOne.start();
+        HIDServer hidServerOne = new HIDServer(hidConfiguration);
+        hidServerOne.start();
 
-        HID hidTwo = new HID(hidConfiguration);
-        hidTwo.start();
+        HIDServer hidServerTwo = new HIDServer(hidConfiguration);
+        hidServerTwo.start();
 
-        assertThat(hidOne.isStarted()).isTrue();
-        assertThat(hidTwo.isStarted()).isTrue();
+        assertThat(hidServerOne.isStarted()).isTrue();
+        assertThat(hidServerTwo.isStarted()).isTrue();
 
-        URL url = hidOne.createURL("/hello");
+        URL url = hidServerOne.createURL("/hello");
         assertThat(url).isNotNull();
         assertThat(url.getHost()).isIn("localhost", "127.0.0.1","127.0.0.2");
 
-        url = hidTwo.createURL("/hello");
+        url = hidServerTwo.createURL("/hello");
         assertThat(url).isNotNull();
         assertThat(url.getHost()).isIn("localhost", "127.0.0.1","127.0.0.2");
 
-        hidOne.stop();
-        hidTwo.stop();
+        hidServerOne.stop();
+        hidServerTwo.stop();
     }
 
     @Test
@@ -52,17 +52,17 @@ public class HIDTest {
                                     .statusCode(200))
                         )
         );
-        HID hid = new HID(hidConfiguration);
-        hid.start();
+        HIDServer hidServer = new HIDServer(hidConfiguration);
+        hidServer.start();
 
-        HttpURLConnection httpClient = (HttpURLConnection) hid.createURL("/simple").openConnection();
+        HttpURLConnection httpClient = (HttpURLConnection) hidServer.createURL("/simple").openConnection();
         httpClient.setRequestMethod("GET");
         httpClient.getResponseCode();
         byte[] response = TestUtil.readInputStreamToByteArray(httpClient.getInputStream());
 
         assertThat(new String(response, StandardCharsets.UTF_8)).isEqualTo("hello");
 
-        hid.stop();
+        hidServer.stop();
     }
 
     @Test
@@ -75,27 +75,27 @@ public class HIDTest {
                         .path("/simple")
                         .addExchange(HIDExchange.newExchange()
                                 .matcher(HIDMatchers.alwaysTrue())
-                                .response(HIDStaticResource.fromString("hello")
-                                        .statusCode(200))
-                        )
+                                .response(HIDStaticResource.fromString("hello"))
+                                .statusCode(200))
+
         ).addContext(
                 HIDContext.newContext()
                         .path("/simpleDelay")
                         .addExchange(HIDExchange.newExchange()
                                 .matcher(HIDMatchers.alwaysTrue())
-                                .response(HIDStaticResource.fromString("hello")
-                                        .delayBeforeStatusResponse(100)
-                                        .statusCode(200)
-                                        .delayBeforeBody(100)
-                                        .timeToWriteResponseBody(500)
-                                        .shouldClose(true)
+                                .response(HIDStaticResource.fromString("hello"))
+                                .delayBeforeStatusResponse(100)
+                                .statusCode(200)
+                                .delayBeforeBody(100)
+                                .timeToWriteResponseBody(500)
+                                .shouldClose(true)
                                 )
-                        )
-        );
-        HID hid = new HID(hidConfiguration);
-        hid.start();
 
-        HttpURLConnection httpClient = (HttpURLConnection) hid.createURL("/simple").openConnection();
+        );
+        HIDServer hidServer = new HIDServer(hidConfiguration);
+        hidServer.start();
+
+        HttpURLConnection httpClient = (HttpURLConnection) hidServer.createURL("/simple").openConnection();
         httpClient.setRequestMethod("GET");
         httpClient.getResponseCode();
         byte[] responseOne = TestUtil.readInputStreamToByteArray(httpClient.getInputStream());
@@ -103,7 +103,7 @@ public class HIDTest {
         assertThat(new String(responseOne, StandardCharsets.UTF_8)).isEqualTo("hello");
 
         long timestamp = System.currentTimeMillis();
-        httpClient = (HttpURLConnection) hid.createURL("/simpleDelay").openConnection();
+        httpClient = (HttpURLConnection) hidServer.createURL("/simpleDelay").openConnection();
         httpClient.setRequestMethod("GET");
         httpClient.getResponseCode();
         byte[] responseTwo = TestUtil.readInputStreamToByteArray(httpClient.getInputStream());
@@ -113,23 +113,23 @@ public class HIDTest {
 
         assertThat(timestampRequestTwo).isBetween(700L, 800L);
 
-        hid.stop();
+        hidServer.stop();
     }
 
     @Test(expected = RuntimeException.class)
     public void incorrectPath() {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
         hidConfiguration.firstPort(1234).lastPort(1243);
-        HID hid = new HID(hidConfiguration);
-        hid.start();
-        hid.createURL("hello");
-        hid.stop();
+        HIDServer hidServer = new HIDServer(hidConfiguration);
+        hidServer.start();
+        hidServer.createURL("hello");
+        hidServer.stop();
     }
 
     @Test(expected = RuntimeException.class)
     public void correctPathHIDnotStarted() {
-        HID hid = new HID(HIDConfiguration.newConfiguration().firstPort(1234).lastPort(1243));
-        hid.createURL("/hello");
+        HIDServer hidServer = new HIDServer(HIDConfiguration.newConfiguration().firstPort(1234).lastPort(1243));
+        hidServer.createURL("/hello");
     }
 
 }

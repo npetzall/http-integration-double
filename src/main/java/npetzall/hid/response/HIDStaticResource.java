@@ -1,5 +1,7 @@
 package npetzall.hid.response;
 
+import npetzall.hid.api.exchange.HIDExchangeContext;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -48,7 +50,7 @@ public class HIDStaticResource extends HIDBaseResponse {
         this.inputStream = inputStream;
     }
 
-    public InputStream getInputStream() {
+    public InputStream getInputStream(HIDExchangeContext hidExchangeContext) {
         return inputStream;
     }
 

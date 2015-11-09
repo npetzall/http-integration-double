@@ -1,5 +1,7 @@
 package npetzall.hid.response;
 
+import npetzall.hid.api.response.HIDResponse;
+
 /**
  * Created by nosse on 2015-11-05.
  */
@@ -38,17 +40,14 @@ public abstract class HIDBaseResponse implements HIDResponse {
         return getThis();
     }
 
-    @Override
     public long getDelayBeforeStatusResponse() {
         return delayBeforeStatusResponse;
     }
 
-    @Override
     public int getStatusCode() {
         return statusCode;
     }
 
-    @Override
     public long getDelayBeforeBody() {
         return delayBeforeBody;
     }

@@ -1,8 +1,7 @@
-package npetzall.hid.request;
+package npetzall.hid.api.request;
 
-/**
- * Created by nosse on 2015-11-05.
- */
+import npetzall.hid.request.HIDRequest;
+
 public interface HIDMatcher {
     boolean matches(HIDRequest hidRequest);
 }
