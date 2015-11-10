@@ -11,7 +11,7 @@ import java.util.Map;
 public class HIDExchangeContextImpl implements HIDExchangeContext {
 
     private final long exchangeStarted;
-    private Map<String,String> attributes = new HashMap<>();
+    private final Map<String,String> attributes = new HashMap<>();
 
     public HIDExchangeContextImpl() {
         exchangeStarted = System.currentTimeMillis();
@@ -22,17 +22,17 @@ public class HIDExchangeContextImpl implements HIDExchangeContext {
     }
 
     @Override
-    public void addAttribute(String key, String value) {
+    public void addAttribute(final String key, final String value) {
         attributes.put(key,value);
     }
 
     @Override
-    public boolean contains(String key) {
+    public boolean contains(final String key) {
         return attributes.containsKey(key);
     }
 
     @Override
-    public String getAttribute(String key) {
+    public String getAttribute(final String key) {
         return attributes.get(key);
     }
 
@@ -41,8 +41,4 @@ public class HIDExchangeContextImpl implements HIDExchangeContext {
         return attributes.size();
     }
 
-    @Override
-    public void clear() {
-        attributes.clear();
-    }
 }

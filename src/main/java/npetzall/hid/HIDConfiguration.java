@@ -17,7 +17,7 @@ public class HIDConfiguration {
 
     private final Set<HIDContext> hidContexts = new LinkedHashSet<>();
 
-    public HIDConfiguration firstPort(final int firstPort) {
+    public HIDConfiguration setFirstPort(final int firstPort) {
         this.firstPort = firstPort;
         return this;
     }
@@ -26,7 +26,7 @@ public class HIDConfiguration {
         return firstPort;
     }
 
-    public HIDConfiguration lastPort(final int lastPort) {
+    public HIDConfiguration setLastPort(final int lastPort) {
         this.lastPort = lastPort;
         return this;
     }

@@ -1,7 +1,7 @@
 package npetzall.hid.request.matchers.logic;
 
 import npetzall.hid.api.request.HIDMatcher;
-import npetzall.hid.request.HIDRequest;
+import npetzall.hid.api.request.HIDRequest;
 
 /**
  * Created by nosse on 2015-11-09.

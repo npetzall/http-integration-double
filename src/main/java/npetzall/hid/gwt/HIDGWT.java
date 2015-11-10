@@ -40,18 +40,18 @@ public class HIDGWT {
     private HIDExchange toHIDExchange(HIDGWTContext context) {
         return HIDExchange
                 .newExchange()
-                .matcher(context.hidMatcher)
-                .response(context.hidResponse)
-                .delayBeforeStatusResponse(context.delayStatusFor)
-                .statusCode(context.respondWithStatusCode)
-                .delayBeforeBody(context.delayResponseBodyFor)
-                .timeToWriteResponseBody(context.writeBodyFor)
-                .shouldClose(context.shouldClose);
+                .setMatcher(context.hidMatcher)
+                .setResponse(context.hidResponse)
+                .setDelayBeforeStatusResponse(context.delayStatusFor)
+                .setStatusCode(context.respondWithStatusCode)
+                .setDelayBeforeBody(context.delayResponseBodyFor)
+                .setTimeToWriteResponseBody(context.writeBodyFor)
+                .setShouldClose(context.shouldClose);
 
     }
 
     private HIDContext toHIDContext(HIDGWTContext context) {
-        return HIDContext.newContext().path(context.contextPath).addExchange(toHIDExchange(context));
+        return HIDContext.newContext().setPath(context.contextPath).addExchange(toHIDExchange(context));
     }
 
     public HIDGWT firstPort(int firstPort) {
@@ -66,7 +66,7 @@ public class HIDGWT {
 
     public HIDServer start() {
         HIDConfiguration hidConfiguration = HIDConfiguration.newConfiguration();
-        hidConfiguration.firstPort(firstPort).lastPort(lastPort);
+        hidConfiguration.setFirstPort(firstPort).setLastPort(lastPort);
         for(HIDContext context: contexts.values()) {
             hidConfiguration.addContext(context);
         }

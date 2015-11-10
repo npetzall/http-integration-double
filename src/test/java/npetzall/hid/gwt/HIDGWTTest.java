@@ -3,7 +3,7 @@ package npetzall.hid.gwt;
 import npetzall.hid.HIDServer;
 import npetzall.hid.TestUtil;
 import npetzall.hid.request.HIDMatchers;
-import npetzall.hid.request.HttpMethodMatcher;
+import npetzall.hid.request.matchers.HttpMethodMatcher;
 import npetzall.hid.response.HIDStaticResource;
 import org.junit.Test;
 
@@ -42,13 +42,13 @@ public class HIDGWTTest {
                         .delayResponseBodyFor(100)
                         .writeBodyFor(500),
                 givenContext("/simpleTwo")
-                .whenRequestMatches(new HttpMethodMatcher("POST"))
-                .thenRespondWith(HIDStaticResource.fromString("eyb"))
-                .delayStatusFor(0)
-                .respondWithStatusCode(200)
-                .delayResponseBodyFor(0)
-                .writeBodyFor(0)
-                .shouldClose(true)
+                        .whenRequestMatches(new HttpMethodMatcher("POST"))
+                        .thenRespondWith(HIDStaticResource.fromString("eyb"))
+                        .delayStatusFor(0)
+                        .respondWithStatusCode(200)
+                        .delayResponseBodyFor(0)
+                        .writeBodyFor(0)
+                        .shouldClose(true)
         )
                 .firstPort(1233)
                 .lastPort(1244)

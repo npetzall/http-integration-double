@@ -5,5 +5,5 @@ import npetzall.hid.api.exchange.HIDExchangeContext;
 import java.io.InputStream;
 
 public interface HIDResponse {
-    InputStream getInputStream(HIDExchangeContext hidExchangeContext);
+    InputStream getInputStream(HIDExchangeContext exchangeContext);
 }

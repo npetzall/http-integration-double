@@ -1,6 +1,7 @@
-package npetzall.hid.request;
+package npetzall.hid.request.matchers.xml;
 
 import npetzall.hid.api.request.HIDMatcher;
+import npetzall.hid.api.request.HIDRequest;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -17,25 +18,7 @@ public class QNameMatcher implements HIDMatcher {
 
     @Override
     public boolean matches(HIDRequest hidRequest) {
-        return matches(hidRequest.getRequestBodyInputStream());
-    }
-
-    public enum ForType {
-        ELEMENT, ATTRIBUTE
-    }
-
-    private final QName qName;
-    private final ForType forType;
-
-    public QNameMatcher(String nameSpace, String localPart, ForType forType) {
-        qName = new QName(nameSpace, localPart);
-        this.forType = forType;
-    }
-
-    public boolean matches(InputStream inputStream) {
-        if (inputStream == null) {
-            throw new RuntimeException("Inputstream is null");
-        }
+        InputStream inputStream = hidRequest.getBodyStream();
         try {
             XMLStreamReader xmlStreamReader = XMLInputFactory.newFactory().createXMLStreamReader(inputStream);
             while(xmlStreamReader.hasNext()) {
@@ -62,5 +45,17 @@ public class QNameMatcher implements HIDMatcher {
             }
         }
         return false;
+    }
+
+    public enum ForType {
+        ELEMENT, ATTRIBUTE
+    }
+
+    private final QName qName;
+    private final ForType forType;
+
+    public QNameMatcher(String nameSpace, String localPart, ForType forType) {
+        qName = new QName(nameSpace, localPart);
+        this.forType = forType;
     }
 }

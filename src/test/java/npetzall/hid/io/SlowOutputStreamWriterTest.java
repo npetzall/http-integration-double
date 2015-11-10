@@ -15,7 +15,7 @@ public class SlowOutputStreamWriterTest {
 
     @Test
     public void slowWriteBytePerUnit() throws IOException {
-        byte[] dataIn = TestUtil.readInputStreamToByteArray(TestUtil.getResourceStream("/matchers/QNameMatcher.xml"));
+        byte[] dataIn = TestUtil.readInputStreamToByteArray(TestUtil.getResourceStream("/matchers/QNameMatcherReverse.xml"));
         assertThat(dataIn.length).isGreaterThan(200);
         ByteArrayOutputStream dataOut = new ByteArrayOutputStream();
         long timeStamp = System.currentTimeMillis();
@@ -28,7 +28,7 @@ public class SlowOutputStreamWriterTest {
 
     @Test
     public void slowWriteDelayPerByte() throws IOException {
-        byte[] dataIn = TestUtil.readInputStreamToByteArray(TestUtil.getResourceStream("/matchers/QNameMatcher.xml"));
+        byte[] dataIn = TestUtil.readInputStreamToByteArray(TestUtil.getResourceStream("/matchers/QNameMatcherReverse.xml"));
         assertThat(dataIn.length).isLessThan(300);
         ByteArrayOutputStream dataOut = new ByteArrayOutputStream();
         long timeStamp = System.currentTimeMillis();

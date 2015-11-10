@@ -8,7 +8,9 @@ import java.io.OutputStream;
  */
 public class SlowOutputStreamWriter {
 
-    public static void slowWrite(byte[] data, OutputStream outputStream, long timeToWriteResponse) throws IOException {
+    private SlowOutputStreamWriter() {}
+
+    public static void slowWrite(final byte[] data, final OutputStream outputStream, final long timeToWriteResponse) throws IOException {
         if (data.length > timeToWriteResponse) {
             slowWriteBytePerUnit(data, outputStream, timeToWriteResponse);
         } else {
@@ -16,7 +18,7 @@ public class SlowOutputStreamWriter {
         }
     }
 
-    private static void slowWriteBytePerUnit(byte[] data, OutputStream outputStream, long timeToWriteResponse) throws IOException {
+    private static void slowWriteBytePerUnit(final byte[] data, final OutputStream outputStream, final long timeToWriteResponse) throws IOException {
         int numberOfBytes = data.length / (int)timeToWriteResponse;
         int lengthWritten = 0;
         for(int i = 0; i < timeToWriteResponse; i++) {
@@ -29,7 +31,7 @@ public class SlowOutputStreamWriter {
         }
     }
 
-    private static void slowWriteDelayPerByte(byte[] data, OutputStream outputStream, long timeToWriteResponse) throws IOException {
+    private static void slowWriteDelayPerByte(final byte[] data, final OutputStream outputStream, final long timeToWriteResponse) throws IOException {
         int delayPerByte = (int)timeToWriteResponse / data.length;
         int lengthWritten = 0;
         for(int i = 0; i < data.length-1; i++) {
@@ -41,7 +43,7 @@ public class SlowOutputStreamWriter {
         outputStream.write(data, lengthWritten,1);
     }
 
-    private static void sleep(long delay) {
+    private static void sleep(final long delay) {
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {

@@ -20,18 +20,22 @@ public class HIDServer {
     }
 
     public void start() {
-        httpServer = createServer();
+        try {
+            httpServer = createServer();
+        } catch (IOException ioException) {
+            throw new RuntimeException("Unable to create HttpServer", ioException);
+        }
         setupContexts();
         httpServer.start();
         started = true;
     }
 
-    private HttpServer createServer() {
-        HttpServer newHttpServer;
+    private HttpServer createServer() throws IOException {
+        final HttpServer newHttpServer = HttpServer.create();
         Exception lastException = null;
         for(int i = hidConfiguration.getFirstPort(); i <= hidConfiguration.getLastPort(); i++) {
             try {
-                newHttpServer = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), i), 0);
+                newHttpServer.bind(new InetSocketAddress(InetAddress.getLoopbackAddress(), i), 0);
                 return newHttpServer;
             } catch (BindException bindException) {
                 lastException = bindException;

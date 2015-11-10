@@ -3,11 +3,12 @@ package npetzall.hid;
 import com.sun.net.httpserver.HttpExchange;
 import npetzall.hid.api.request.HIDDataExtractor;
 import npetzall.hid.api.request.HIDMatcher;
+import npetzall.hid.api.request.HIDRequest;
 import npetzall.hid.api.response.HIDResponse;
 import npetzall.hid.exchange.HIDExchangeContextImpl;
+import npetzall.hid.exchange.extractor.HIDNoopDataExtractor;
+import npetzall.hid.request.HIDHttpExchangeWrapper;
 import npetzall.hid.request.HIDMatchers;
-import npetzall.hid.request.HIDNoopDataExtractor;
-import npetzall.hid.request.HIDRequest;
 import npetzall.hid.response.HIDResponseDecorator;
 
 import java.io.IOException;
@@ -25,60 +26,54 @@ public class HIDExchange {
     private HIDDataExtractor hidDataExtractor = new HIDNoopDataExtractor();
     private HIDResponseDecorator hidResponse;
 
-    public HIDExchange matcher(HIDMatcher hidMatcher) {
+    public HIDExchange setMatcher(final HIDMatcher hidMatcher) {
         this.hidMatcher = hidMatcher;
         return this;
     }
 
-    public HIDExchange dataExtractor(HIDDataExtractor hidDataExtractor) {
+    public HIDExchange setDataExtractor(final HIDDataExtractor hidDataExtractor) {
         this.hidDataExtractor = hidDataExtractor;
         return this;
     }
 
-    public HIDExchange response(HIDResponse hidResponse) {
+    public HIDExchange setResponse(final HIDResponse hidResponse) {
         this.hidResponse = new HIDResponseDecorator(hidResponse);
         return this;
     }
 
-    @Deprecated
-    public HIDResponseDecorator getResponse() {
-        return hidResponse;
-    }
-
-
-    public boolean matches(HIDRequest hidRequest) {
+    public boolean matches(final HIDHttpExchangeWrapper hidRequest) {
         return hidMatcher.matches(hidRequest);
     }
 
-    public void extractData(HIDExchangeContextImpl exchangeContext) {
-        hidDataExtractor.extractData(exchangeContext);
+    public void extractData(HIDRequest request, HIDExchangeContextImpl exchangeContext) {
+        hidDataExtractor.extract(request, exchangeContext);
     }
 
-    public void sendResponse(HIDExchangeContextImpl exchangeContext, HttpExchange httpExchange) throws IOException {
+    public void sendResponse(final HIDExchangeContextImpl exchangeContext, final HttpExchange httpExchange) throws IOException {
         hidResponse.writeToOutputStream(exchangeContext, httpExchange);
     }
 
-    public HIDExchange delayBeforeStatusResponse(long delayBeforeStatusResponse) {
+    public HIDExchange setDelayBeforeStatusResponse(final long delayBeforeStatusResponse) {
         hidResponse.delayBeforeStatusResponse(delayBeforeStatusResponse);
         return this;
     }
 
-    public HIDExchange statusCode(int statusCode) {
+    public HIDExchange setStatusCode(final int statusCode) {
         hidResponse.statusCode(statusCode);
         return this;
     }
 
-    public HIDExchange delayBeforeBody(long delayBeforeBody) {
+    public HIDExchange setDelayBeforeBody(final long delayBeforeBody) {
         hidResponse.delayBeforeBody(delayBeforeBody);
         return this;
     }
 
-    public HIDExchange timeToWriteResponseBody(long timeToWriteResponseBody) {
+    public HIDExchange setTimeToWriteResponseBody(final long timeToWriteResponseBody) {
         hidResponse.timeToWriteResponseBody(timeToWriteResponseBody);
         return this;
     }
 
-    public HIDExchange shouldClose(boolean shouldClose) {
+    public HIDExchange setShouldClose(final boolean shouldClose) {
         hidResponse.shouldClose(shouldClose);
         return this;
     }

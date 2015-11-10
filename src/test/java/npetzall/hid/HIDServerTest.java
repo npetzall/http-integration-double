@@ -16,7 +16,7 @@ public class HIDServerTest {
     @Test
     public void doubleHIDs() {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
-        hidConfiguration.firstPort(1234).lastPort(1243);
+        hidConfiguration.setFirstPort(1234).setLastPort(1243);
         HIDServer hidServerOne = new HIDServer(hidConfiguration);
         hidServerOne.start();
 
@@ -42,15 +42,15 @@ public class HIDServerTest {
     public void simpleExchange() throws IOException {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
         hidConfiguration
-                .firstPort(1234)
-                .lastPort(1243).addContext(
+                .setFirstPort(1234)
+                .setLastPort(1243).addContext(
                 HIDContext.newContext()
-                        .path("/simple")
+                        .setPath("/simple")
                         .addExchange(HIDExchange.newExchange()
-                            .matcher(HIDMatchers.alwaysTrue())
-                            .response(HIDStaticResource.fromString("hello")
-                                    .statusCode(200))
-                        )
+                            .setMatcher(HIDMatchers.alwaysTrue())
+                            .setResponse(HIDStaticResource.fromString("hello"))
+                                    .setStatusCode(200))
+
         );
         HIDServer hidServer = new HIDServer(hidConfiguration);
         hidServer.start();
@@ -69,26 +69,26 @@ public class HIDServerTest {
     public void checkDelay() throws IOException {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
         hidConfiguration
-                .firstPort(1234)
-                .lastPort(1243).addContext(
+                .setFirstPort(1234)
+                .setLastPort(1243).addContext(
                 HIDContext.newContext()
-                        .path("/simple")
+                        .setPath("/simple")
                         .addExchange(HIDExchange.newExchange()
-                                .matcher(HIDMatchers.alwaysTrue())
-                                .response(HIDStaticResource.fromString("hello"))
-                                .statusCode(200))
+                                .setMatcher(HIDMatchers.alwaysTrue())
+                                .setResponse(HIDStaticResource.fromString("hello"))
+                                .setStatusCode(200))
 
         ).addContext(
                 HIDContext.newContext()
-                        .path("/simpleDelay")
+                        .setPath("/simpleDelay")
                         .addExchange(HIDExchange.newExchange()
-                                .matcher(HIDMatchers.alwaysTrue())
-                                .response(HIDStaticResource.fromString("hello"))
-                                .delayBeforeStatusResponse(100)
-                                .statusCode(200)
-                                .delayBeforeBody(100)
-                                .timeToWriteResponseBody(500)
-                                .shouldClose(true)
+                                .setMatcher(HIDMatchers.alwaysTrue())
+                                .setResponse(HIDStaticResource.fromString("hello"))
+                                .setDelayBeforeStatusResponse(100)
+                                .setStatusCode(200)
+                                .setDelayBeforeBody(100)
+                                .setTimeToWriteResponseBody(500)
+                                .setShouldClose(true)
                                 )
 
         );
@@ -119,7 +119,7 @@ public class HIDServerTest {
     @Test(expected = RuntimeException.class)
     public void incorrectPath() {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
-        hidConfiguration.firstPort(1234).lastPort(1243);
+        hidConfiguration.setFirstPort(1234).setLastPort(1243);
         HIDServer hidServer = new HIDServer(hidConfiguration);
         hidServer.start();
         hidServer.createURL("hello");
@@ -128,7 +128,7 @@ public class HIDServerTest {
 
     @Test(expected = RuntimeException.class)
     public void correctPathHIDnotStarted() {
-        HIDServer hidServer = new HIDServer(HIDConfiguration.newConfiguration().firstPort(1234).lastPort(1243));
+        HIDServer hidServer = new HIDServer(HIDConfiguration.newConfiguration().setFirstPort(1234).setLastPort(1243));
         hidServer.createURL("/hello");
     }
 

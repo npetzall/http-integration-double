@@ -1,7 +1,7 @@
 package npetzall.hid.request.matchers;
 
 import npetzall.hid.api.request.HIDMatcher;
-import npetzall.hid.request.HIDRequest;
+import npetzall.hid.api.request.HIDRequest;
 
 import java.util.regex.Pattern;
 
@@ -18,6 +18,6 @@ public class RegExpMatcher implements HIDMatcher {
 
     @Override
     public boolean matches(HIDRequest hidRequest) {
-        return pattern.matcher(new String(hidRequest.getRequestBodyBytes())).matches();
+        return pattern.matcher(hidRequest.getBodyString()).matches();
     }
 }

@@ -1,6 +1,7 @@
 package npetzall.hid.response;
 
 import npetzall.hid.api.exchange.HIDExchangeContext;
+import npetzall.hid.api.response.HIDResponse;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -9,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Created by nosse on 2015-11-04.
  */
-public class HIDStaticResource extends HIDBaseResponse {
+public class HIDStaticResource implements HIDResponse {
 
     public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
@@ -39,11 +40,6 @@ public class HIDStaticResource extends HIDBaseResponse {
 
     public HIDStaticResource(String text, Charset charset) {
         inputStream = new ByteArrayInputStream(text.getBytes(charset));
-    }
-
-    @Override
-    public HIDStaticResource getThis() {
-        return this;
     }
 
     public HIDStaticResource(InputStream inputStream) {
