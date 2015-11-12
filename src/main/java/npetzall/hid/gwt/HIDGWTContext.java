@@ -1,5 +1,6 @@
 package npetzall.hid.gwt;
 
+import npetzall.hid.api.request.HIDDataExtractor;
 import npetzall.hid.api.request.HIDMatcher;
 import npetzall.hid.api.response.HIDResponse;
 
@@ -15,6 +16,7 @@ public class HIDGWTContext {
 
     final String contextPath;
     HIDMatcher hidMatcher;
+    HIDDataExtractor hidDataExtractor;
     HIDResponse hidResponse;
     Map<String,Set<String>> headers = new HashMap<>();
     long delayStatusFor = 0;
@@ -29,6 +31,11 @@ public class HIDGWTContext {
 
     public HIDGWTContext whenRequestMatches(HIDMatcher hidMatcher) {
         this.hidMatcher = hidMatcher;
+        return this;
+    }
+
+    public HIDGWTContext thenExtract(HIDDataExtractor hidDataExtractor) {
+        this.hidDataExtractor = hidDataExtractor;
         return this;
     }
 

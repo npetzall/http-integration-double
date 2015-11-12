@@ -1,11 +1,11 @@
 package npetzall.hid.api.request;
 
-import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpPrincipal;
-
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.security.Principal;
+import java.util.List;
+import java.util.Map;
 
 public interface HIDRequest {
 
@@ -14,12 +14,12 @@ public interface HIDRequest {
 
     String getProtocol();
 
-    Headers getHeaders();
+    Map<String, List<String>> getHeaders();
 
     String getMethod();
     URI getURI();
 
-    HttpPrincipal getPrincipal();
+    Principal getPrincipal();
 
     byte[] getBodyBytes();
     String getBodyString();

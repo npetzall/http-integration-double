@@ -4,7 +4,8 @@ import npetzall.hid.api.request.HIDMatcher;
 import npetzall.hid.request.matchers.*;
 import npetzall.hid.request.matchers.logic.AndMatcher;
 import npetzall.hid.request.matchers.logic.OrMatcher;
-import npetzall.hid.request.matchers.xml.QNameMatcher;
+import npetzall.hid.request.matchers.xml.AttributeQNameMatcher;
+import npetzall.hid.request.matchers.xml.ElementQNameMatcher;
 
 /**
  * Created by nosse on 2015-11-04.
@@ -27,12 +28,12 @@ public class HIDMatchers {
         return new OrMatcher(matchers);
     }
 
-    public static QNameMatcher elementQNameMatcher(String nameSpace, String localPart) {
-        return new QNameMatcher(nameSpace, localPart, QNameMatcher.ForType.ELEMENT);
+    public static ElementQNameMatcher elementQNameMatcher(String nameSpace, String localPart) {
+        return new ElementQNameMatcher(nameSpace, localPart);
     }
 
-    public static QNameMatcher attributeQNameMatcher(String nameSpace, String localPart) {
-        return new QNameMatcher(nameSpace, localPart, QNameMatcher.ForType.ATTRIBUTE);
+    public static AttributeQNameMatcher attributeQNameMatcher(String nameSpace, String localPart) {
+        return new AttributeQNameMatcher(nameSpace, localPart);
     }
 
     public static HttpMethodMatcher httpMethodMatcher(String method) {

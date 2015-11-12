@@ -1,7 +1,6 @@
 package npetzall.hid.response;
 
 import com.sun.net.httpserver.HttpExchange;
-import npetzall.hid.api.exchange.HIDExchangeContext;
 import npetzall.hid.api.response.HIDResponse;
 import npetzall.hid.exchange.HIDExchangeContextImpl;
 import npetzall.hid.io.SlowOutputStreamWriter;
@@ -47,11 +46,6 @@ public class HIDResponseDecorator {
     public HIDResponseDecorator shouldClose(boolean shouldClose) {
         this.shouldClose = shouldClose;
         return this;
-    }
-
-    @Deprecated
-    public InputStream getInputStream(HIDExchangeContext hidExchangeContext) {
-        return hidResponse.getInputStream(hidExchangeContext);
     }
 
     public void writeToOutputStream(HIDExchangeContextImpl exchangeContext, HttpExchange httpExchange) throws IOException {

@@ -2,6 +2,7 @@ package npetzall.hid;
 
 import npetzall.hid.request.HIDMatchers;
 import npetzall.hid.response.HIDStaticResource;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -9,6 +10,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import static npetzall.hid.exchange.extractor.HIDExtractors.xPathExtractor;
+import static npetzall.hid.gwt.HIDGWT.givenContext;
+import static npetzall.hid.gwt.HIDGWT.hid;
+import static npetzall.hid.request.HIDMatchers.*;
+import static npetzall.hid.response.HIDResponses.tokenReplacer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HIDServerTest {
@@ -114,6 +120,35 @@ public class HIDServerTest {
         assertThat(timestampRequestTwo).isBetween(700L, 800L);
 
         hidServer.stop();
+    }
+
+    @Test
+    @Ignore
+    public void xmlExtractAndTokenReplace() throws IOException {
+        HIDServer hidServer = hid(
+                givenContext("/echo")
+                        .whenRequestMatches(and(httpMethodMatcher("POST"), elementQNameMatcher("","message")))
+                        .thenExtract(xPathExtractor("",""))
+                        .thenRespondWith(tokenReplacer(TestUtil.getResourceStream("/response/EchoResponse.xml")))
+                        .delayStatusFor(0)
+                        .respondWithStatusCode(200)
+                        .delayResponseBodyFor(0)
+                        .writeBodyFor(0)
+                        .shouldClose(true)
+        )
+                .firstPort(1234)
+                .lastPort(1255)
+                .start();
+
+        HttpURLConnection httpClient = (HttpURLConnection) hidServer.createURL("/echo").openConnection();
+        httpClient.setRequestMethod("POST");
+        httpClient.setDoOutput(true);
+        httpClient.setDoInput(true);
+        httpClient.getOutputStream().write("<request><message>hello</message></request>".getBytes(StandardCharsets.UTF_8));
+        httpClient.getOutputStream().flush();
+        httpClient.getResponseCode();
+        String response = new String(TestUtil.readInputStreamToByteArray(httpClient.getInputStream()), StandardCharsets.UTF_8);
+        assertThat(response).isXmlEqualTo("<response><echo>hello</echo></response>");
     }
 
     @Test(expected = RuntimeException.class)

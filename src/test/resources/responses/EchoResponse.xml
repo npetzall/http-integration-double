@@ -1,0 +1,3 @@
+<response>
+    <echo>${message}</echo>
+</response>

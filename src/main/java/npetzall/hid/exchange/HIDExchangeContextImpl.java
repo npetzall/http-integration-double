@@ -2,8 +2,7 @@ package npetzall.hid.exchange;
 
 import npetzall.hid.api.exchange.HIDExchangeContext;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by nosse on 2015-11-08.
@@ -34,6 +33,16 @@ public class HIDExchangeContextImpl implements HIDExchangeContext {
     @Override
     public String getAttribute(final String key) {
         return attributes.get(key);
+    }
+
+    @Override
+    public Set<String> getAttributeKeys() {
+        return attributes.keySet();
+    }
+
+    @Override
+    public List<String> getAttributeValues() {
+        return new ArrayList<>(attributes.values());
     }
 
     @Override

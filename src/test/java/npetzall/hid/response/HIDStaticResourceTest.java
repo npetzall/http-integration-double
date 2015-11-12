@@ -33,18 +33,18 @@ public class HIDStaticResourceTest {
 
     @Test
     public void withInputStream() throws IOException {
-        InputStream in = HIDStaticResource.fromInputStream(getClass().getResourceAsStream("/responses/SimpleResponse.xml"))
+        InputStream in = HIDStaticResource.fromInputStream(getClass().getResourceAsStream("/responses/EchoResponse.xml"))
                 .getInputStream(null);
         byte[] dataFromHIDStaticResource = TestUtil.readInputStreamToByteArray(in);
-        byte[] expected = TestUtil.readInputStreamToByteArray(TestUtil.getResourceStream("/responses/SimpleResponse.xml"));
+        byte[] expected = TestUtil.readInputStreamToByteArray(TestUtil.getResourceStream("/responses/EchoResponse.xml"));
         assertThat(dataFromHIDStaticResource).containsExactly(expected);
     }
 
     @Test
     public void withFile() throws IOException {
-        InputStream in = HIDStaticResource.fromFile("src/test/resources/responses/SimpleResponse.xml").getInputStream(null);
+        InputStream in = HIDStaticResource.fromFile("src/test/resources/responses/EchoResponse.xml").getInputStream(null);
         byte[] dataFromHIDStaticResource = TestUtil.readInputStreamToByteArray(in);
-        byte[] expected = TestUtil.readInputStreamToByteArray(new FileInputStream("src/test/resources/responses/SimpleResponse.xml"));
+        byte[] expected = TestUtil.readInputStreamToByteArray(new FileInputStream("src/test/resources/responses/EchoResponse.xml"));
         assertThat(dataFromHIDStaticResource).containsExactly(expected);
     }
 

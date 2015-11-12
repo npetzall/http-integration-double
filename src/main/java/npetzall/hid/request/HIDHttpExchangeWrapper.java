@@ -1,8 +1,6 @@
 package npetzall.hid.request;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpPrincipal;
 import npetzall.hid.api.request.HIDRequest;
 
 import java.io.ByteArrayInputStream;
@@ -13,7 +11,10 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class HIDHttpExchangeWrapper implements HIDRequest{
 
@@ -36,42 +37,52 @@ public class HIDHttpExchangeWrapper implements HIDRequest{
         request = byteArrayOutputStream.toByteArray();
     }
 
+    @Override
     public InetSocketAddress getLocalAddress() {
         return httpExchange.getLocalAddress();
     }
 
+    @Override
     public InetSocketAddress getRemoteAddress() {
         return httpExchange.getRemoteAddress();
     }
 
+    @Override
     public String getProtocol() {
         return httpExchange.getProtocol();
     }
 
-    public Headers getHeaders() {
+    @Override
+    public Map<String, List<String>> getHeaders() {
         return httpExchange.getRequestHeaders();
     }
 
+    @Override
     public String getMethod() {
         return httpExchange.getRequestMethod();
     }
 
+    @Override
     public URI getURI() {
         return httpExchange.getRequestURI();
     }
 
-    public HttpPrincipal getPrincipal() {
+    @Override
+    public Principal getPrincipal() {
         return httpExchange.getPrincipal();
     }
 
+    @Override
     public InputStream getBodyStream() {
         return new ByteArrayInputStream(request);
     }
 
+    @Override
     public byte[] getBodyBytes() {
         return Arrays.copyOf(request, request.length);
     }
 
+    @Override
     public String getBodyString() {
         return new String(request, charset);
     }
