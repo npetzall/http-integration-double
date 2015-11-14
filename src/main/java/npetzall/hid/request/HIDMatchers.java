@@ -15,10 +15,16 @@ public class HIDMatchers {
     private static final AlwaysTrueMatcher ALWAYS_TRUE_MATCHER = new AlwaysTrueMatcher();
     private static final AlwaysFalseMatcher ALWAYS_FALSE_MATCHER = new AlwaysFalseMatcher();
 
+    private HIDMatchers() {
+        //Should only be used thru static methods
+    }
+
     public static AlwaysTrueMatcher alwaysTrue() {
         return ALWAYS_TRUE_MATCHER;
     }
-    public static AlwaysFalseMatcher alwaysFalse() { return ALWAYS_FALSE_MATCHER; }
+    public static AlwaysFalseMatcher alwaysFalse() {
+        return ALWAYS_FALSE_MATCHER;
+    }
 
     public static AndMatcher and(HIDMatcher...matchers) {
         return new AndMatcher(matchers);

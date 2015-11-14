@@ -13,12 +13,13 @@ import java.util.List;
  * Created by nosse on 2015-11-04.
  */
 public class HIDContext implements HttpHandler {
-    public static HIDContext newContext() {
-        return new HIDContext();
-    }
 
     private String path;
     private final List<HIDExchange> hidExchanges = new ArrayList<>();
+
+    public static HIDContext newContext() {
+        return new HIDContext();
+    }
 
     public HIDContext setPath(final String path) {
         this.path = path;

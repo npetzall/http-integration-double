@@ -36,9 +36,6 @@ public class HeaderMatcher implements HIDMatcher {
 
     private boolean headerNameValueExists(HIDRequest hidRequest) {
         List<String> values = hidRequest.getHeaders().get(key);
-        if (values == null) {
-            return false;
-        }
-        return values.contains(value);
+        return values != null && values.contains(value);
     }
 }

@@ -13,6 +13,25 @@ import java.util.Map;
  */
 public class HIDGWT {
 
+    private Map<String, HIDContext> contexts = new HashMap<>();
+    private int firstPort = 1234;
+    private int lastPort = 1342;
+
+    public HIDGWT(HIDGWTContext...contexts) {
+        for(HIDGWTContext context : contexts) {
+            addContext(context);
+        }
+    }
+
+    private void addContext(HIDGWTContext context) {
+        HIDContext existingContext = this.contexts.get(context.contextPath);
+        if (existingContext == null) {
+            this.contexts.put(context.contextPath, toHIDContext(context));
+        } else {
+            existingContext.addExchange(toHIDExchange(context));
+        }
+    }
+
     public static HIDGWT hid(HIDGWTContext...contexts) {
         return new HIDGWT(contexts);
     }
@@ -21,23 +40,7 @@ public class HIDGWT {
         return new HIDGWTContext(contextPath);
     }
 
-    private Map<String, HIDContext> contexts = new HashMap<>();
-    private int firstPort = 1234;
-    private int lastPort = 1342;
-
-    public HIDGWT(HIDGWTContext...contexts) {
-        HIDContext existingContext;
-        for(HIDGWTContext context : contexts) {
-            existingContext = this.contexts.get(context.contextPath);
-            if (existingContext == null) {
-                this.contexts.put(context.contextPath, toHIDContext(context));
-            } else {
-                existingContext.addExchange(toHIDExchange(context));
-            }
-        }
-    }
-
-    private HIDExchange toHIDExchange(HIDGWTContext context) {
+    private static HIDExchange toHIDExchange(HIDGWTContext context) {
         return HIDExchange
                 .newExchange()
                 .setMatcher(context.hidMatcher)
@@ -50,7 +53,7 @@ public class HIDGWT {
 
     }
 
-    private HIDContext toHIDContext(HIDGWTContext context) {
+    private static HIDContext toHIDContext(HIDGWTContext context) {
         return HIDContext.newContext().setPath(context.contextPath).addExchange(toHIDExchange(context));
     }
 
@@ -67,9 +70,7 @@ public class HIDGWT {
     public HIDServer start() {
         HIDConfiguration hidConfiguration = HIDConfiguration.newConfiguration();
         hidConfiguration.setFirstPort(firstPort).setLastPort(lastPort);
-        for(HIDContext context: contexts.values()) {
-            hidConfiguration.addContext(context);
-        }
+        hidConfiguration.addContexts(contexts.values());
         HIDServer hidServer = new HIDServer(hidConfiguration);
         hidServer.start();
         return hidServer;

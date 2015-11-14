@@ -1,6 +1,7 @@
 package npetzall.hid;
 
 import com.sun.net.httpserver.HttpServer;
+import npetzall.hid.io.exceptions.RuntimeIOException;
 
 import java.io.IOException;
 import java.net.*;
@@ -23,7 +24,7 @@ public class HIDServer {
         try {
             httpServer = createServer();
         } catch (IOException ioException) {
-            throw new RuntimeException("Unable to create HttpServer", ioException);
+            throw new RuntimeIOException("Unable to create HttpServer", ioException);
         }
         setupContexts();
         httpServer.start();
@@ -32,7 +33,7 @@ public class HIDServer {
 
     private HttpServer createServer() throws IOException {
         final HttpServer newHttpServer = HttpServer.create();
-        Exception lastException = null;
+        IOException lastException = null;
         for(int i = hidConfiguration.getFirstPort(); i <= hidConfiguration.getLastPort(); i++) {
             try {
                 newHttpServer.bind(new InetSocketAddress(InetAddress.getLoopbackAddress(), i), 0);
@@ -44,7 +45,7 @@ public class HIDServer {
                 break;
             }
         }
-        throw new RuntimeException("Unable to create HttpServer", lastException);
+        throw new RuntimeIOException("Unable to create HttpServer", lastException);
     }
 
     private void setupContexts() {
@@ -66,16 +67,24 @@ public class HIDServer {
     }
 
     public URL createURL(final String path) {
-        if (path.charAt(0) != '/') {
-            throw new RuntimeException("Path must begin with /");
-        }
-        if (httpServer == null) {
-            throw new RuntimeException("Server doesnt exist");
-        }
+        checkPath(path);
+        checkServer();
         try {
             return new URL("http://" + httpServer.getAddress().getHostString() + ":" + httpServer.getAddress().getPort() + path);
         } catch (MalformedURLException e) {
             throw new RuntimeException("Unable to create URL for context: + contextPath",e);
+        }
+    }
+
+    private static void checkPath(String path) {
+        if (path.charAt(0) != '/') {
+            throw new RuntimeException("Path must begin with /");
+        }
+    }
+
+    private void checkServer() {
+        if (httpServer == null) {
+            throw new RuntimeException("Server doesnt exist");
         }
     }
 }

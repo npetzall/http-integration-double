@@ -71,10 +71,11 @@ public class HIDResponseDecorator {
             httpExchange.close();
     }
 
-    private void sleep(long delay) {
+    private static void sleep(long delay) {
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
+            //Swallow
         }
     }
 

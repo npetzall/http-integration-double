@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <exchange xmlns="http://npetzall/hid">
     <request>
-        <reverse exists="true">
+        <reverse someother="yes" exists="true">
             <message>npetzall</message>
         </reverse>
     </request>

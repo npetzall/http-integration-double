@@ -8,7 +8,9 @@ import java.io.OutputStream;
  */
 public class SlowOutputStreamWriter {
 
-    private SlowOutputStreamWriter() {}
+    private SlowOutputStreamWriter() {
+        //Should only be used thru static methods
+    }
 
     public static void slowWrite(final byte[] data, final OutputStream outputStream, final long timeToWriteResponse) throws IOException {
         if (data.length > timeToWriteResponse) {
@@ -47,6 +49,7 @@ public class SlowOutputStreamWriter {
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
+            //swallow
         }
     }
 

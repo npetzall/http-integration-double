@@ -8,7 +8,7 @@ public class CircularIntBuffer {
     private int readPointer = 0;
     private int writerPointer = 0;
     private AtomicInteger available = new AtomicInteger(0);
-    private Object monitor = new Object();
+    private final Object monitor = new Object();
     private volatile boolean closed;
 
     private final int bufferSize;
@@ -49,6 +49,11 @@ public class CircularIntBuffer {
                 }
             }
         }
+
+        return doRead();
+    }
+
+    private int doRead() {
         if(closed) {
             return -1;
         } else {
@@ -58,7 +63,6 @@ public class CircularIntBuffer {
             readPointer = (readPointer + 1) % bufferSize;
             return value;
         }
-
     }
 
     private boolean continueToWaitForNewData() {

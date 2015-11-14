@@ -14,6 +14,7 @@ public class ElementQNameMatcher extends AbstractQNameMatcher implements HIDMatc
         super(nameSpace, localPart);
     }
 
+    @Override
     protected boolean matches(XMLStreamReader xmlStreamReader) throws XMLStreamException {
         if (isStartElement(xmlStreamReader.next()) && qName.equals(xmlStreamReader.getName())) {
             return true;

@@ -9,17 +9,14 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import static npetzall.hid.io.IOUtils.closeQuietly;
 
 /**
  * Created by nosse on 2015-11-12.
  */
 public abstract class AbstractQNameMatcher implements HIDMatcher {
-
-    private static final Logger LOGGER = Logger.getLogger(AbstractQNameMatcher.class.getName());
 
     protected final QName qName;
 
@@ -32,18 +29,18 @@ public abstract class AbstractQNameMatcher implements HIDMatcher {
         InputStream inputStream = hidRequest.getBodyStream();
         try {
             XMLStreamReader xmlStreamReader = XMLInputFactory.newFactory().createXMLStreamReader(inputStream);
-            while(xmlStreamReader.hasNext()) {
-                if(matches(xmlStreamReader))
-                    return true;
-            }
+            return doMatches(xmlStreamReader);
         } catch (XMLStreamException e) {
             throw new XMLStreamReaderException("Failed creating XMLStreamReader", e);
         } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                LOGGER.log(Level.FINE, "Exception during InputStream.close()", e);
-            }
+            closeQuietly(inputStream);
+        }
+    }
+
+    private boolean doMatches(XMLStreamReader xmlStreamReader) throws XMLStreamException {
+        while(xmlStreamReader.hasNext()) {
+            if(matches(xmlStreamReader))
+                return true;
         }
         return false;
     }

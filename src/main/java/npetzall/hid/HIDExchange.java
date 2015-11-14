@@ -18,13 +18,13 @@ import java.io.IOException;
  */
 public class HIDExchange {
 
-    public static HIDExchange newExchange() {
-        return new HIDExchange();
-    }
-
     private HIDMatcher hidMatcher = HIDMatchers.alwaysTrue();
     private HIDDataExtractor hidDataExtractor = new HIDNoopDataExtractor();
     private HIDResponseDecorator hidResponse;
+
+    public static HIDExchange newExchange() {
+        return new HIDExchange();
+    }
 
     public HIDExchange setMatcher(final HIDMatcher hidMatcher) {
         this.hidMatcher = hidMatcher;
