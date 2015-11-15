@@ -1,6 +1,6 @@
 package npetzall.hid.io;
 
-import npetzall.hid.io.exceptions.RuntimeIOException;
+import npetzall.hid.exception.io.RuntimeIOException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;

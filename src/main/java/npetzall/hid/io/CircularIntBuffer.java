@@ -1,6 +1,6 @@
 package npetzall.hid.io;
 
-import npetzall.hid.io.exceptions.BufferClosedException;
+import npetzall.hid.exception.io.BufferClosedException;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

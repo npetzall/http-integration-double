@@ -2,7 +2,7 @@ package npetzall.hid.request.matchers;
 
 import npetzall.hid.api.request.HIDMatcher;
 import npetzall.hid.request.DummyRequest;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -13,9 +13,7 @@ import static npetzall.hid.TestUtil.readInputStreamToByteArray;
 import static npetzall.hid.request.HIDMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by nosse on 2015-11-09.
- */
+
 public class MatchersTest {
 
     @Test

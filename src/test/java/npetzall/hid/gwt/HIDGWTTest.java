@@ -5,7 +5,7 @@ import npetzall.hid.TestUtil;
 import npetzall.hid.request.HIDMatchers;
 import npetzall.hid.request.matchers.HttpMethodMatcher;
 import npetzall.hid.response.HIDStaticResource;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -14,10 +14,6 @@ import java.nio.charset.StandardCharsets;
 import static npetzall.hid.gwt.HIDGWT.givenContext;
 import static npetzall.hid.gwt.HIDGWT.hid;
 import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * Created by nosse on 2015-11-08.
- */
 
 public class HIDGWTTest {
 

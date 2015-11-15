@@ -2,8 +2,7 @@ package npetzall.hid;
 
 import npetzall.hid.request.HIDMatchers;
 import npetzall.hid.response.HIDStaticResource;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -123,13 +122,12 @@ public class HIDServerTest {
     }
 
     @Test
-    @Ignore
     public void xmlExtractAndTokenReplace() throws IOException {
         HIDServer hidServer = hid(
                 givenContext("/echo")
                         .whenRequestMatches(and(httpMethodMatcher("POST"), elementQNameMatcher("","message")))
-                        .thenExtract(xPathExtractor("",""))
-                        .thenRespondWith(tokenReplacer(TestUtil.getResourceStream("/response/EchoResponse.xml")))
+                        .thenExtract(xPathExtractor("/request/message","message"))
+                        .thenRespondWith(tokenReplacer(TestUtil.getResourceStream("/responses/EchoResponse.xml")))
                         .delayStatusFor(0)
                         .respondWithStatusCode(200)
                         .delayResponseBodyFor(0)
@@ -145,13 +143,42 @@ public class HIDServerTest {
         httpClient.setDoOutput(true);
         httpClient.setDoInput(true);
         httpClient.getOutputStream().write("<request><message>hello</message></request>".getBytes(StandardCharsets.UTF_8));
-        httpClient.getOutputStream().flush();
+        httpClient.getOutputStream().close();
         httpClient.getResponseCode();
         String response = new String(TestUtil.readInputStreamToByteArray(httpClient.getInputStream()), StandardCharsets.UTF_8);
         assertThat(response).isXmlEqualTo("<response><echo>hello</echo></response>");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
+    public void defaultTokenAndTokenReplace() throws IOException {
+        HIDServer hidServer = hid(
+                givenContext("/echo")
+                        .whenRequestMatches(and(httpMethodMatcher("POST"), elementQNameMatcher("","message")))
+                        .addTokenReplacement("message","hello")
+                        .thenRespondWith(tokenReplacer(TestUtil.getResourceStream("/responses/EchoResponse.xml")))
+                        .delayStatusFor(0)
+                        .respondWithStatusCode(200)
+                        .delayResponseBodyFor(0)
+                        .writeBodyFor(0)
+                        .shouldClose(true)
+        )
+                .firstPort(1234)
+                .lastPort(1255)
+                .start();
+
+        HttpURLConnection httpClient = (HttpURLConnection) hidServer.createURL("/echo").openConnection();
+        httpClient.setRequestMethod("POST");
+        httpClient.setDoOutput(true);
+        httpClient.setDoInput(true);
+        httpClient.getOutputStream().write("<request><message>hello</message></request>".getBytes(StandardCharsets.UTF_8));
+        httpClient.getOutputStream().close();
+        httpClient.getResponseCode();
+        String response = new String(TestUtil.readInputStreamToByteArray(httpClient.getInputStream()), StandardCharsets.UTF_8);
+        assertThat(response).isXmlEqualTo("<response><echo>hello</echo></response>");
+    }
+
+
+    @Test(expectedExceptions = RuntimeException.class)
     public void incorrectPath() {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
         hidConfiguration.setFirstPort(1234).setLastPort(1243);
@@ -161,7 +188,7 @@ public class HIDServerTest {
         hidServer.stop();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expectedExceptions = RuntimeException.class)
     public void correctPathHIDnotStarted() {
         HIDServer hidServer = new HIDServer(HIDConfiguration.newConfiguration().setFirstPort(1234).setLastPort(1243));
         hidServer.createURL("/hello");

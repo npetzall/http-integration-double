@@ -1,13 +1,10 @@
 package npetzall.hid.io;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-/**
- * Created by nosse on 2015-11-11.
- */
 public class CircularIntBufferTest {
 
     @Test
@@ -54,7 +51,7 @@ public class CircularIntBufferTest {
         assertThat(cib.available()).isEqualTo(0);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expectedExceptions = RuntimeException.class)
     public void cantWriteToClosedBuffer() {
         CircularIntBuffer cib = new CircularIntBuffer(10);
         cib.close();

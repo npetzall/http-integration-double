@@ -1,7 +1,7 @@
 package npetzall.hid.response;
 
 import npetzall.hid.TestUtil;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,9 +10,6 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by nosse on 2015-11-04.
- */
 public class HIDStaticResourceTest {
 
     private final String TEST_STRING = "Hello";
@@ -48,7 +45,7 @@ public class HIDStaticResourceTest {
         assertThat(dataFromHIDStaticResource).containsExactly(expected);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expectedExceptions = RuntimeException.class)
     public void nonExistingFile() {
         HIDStaticResource.fromFile("sdfas/sdf");
     }

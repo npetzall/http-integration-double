@@ -1,4 +1,4 @@
-package npetzall.hid.request.matchers.xml.exception;
+package npetzall.hid.exception.xml;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -7,6 +7,6 @@ import javax.xml.stream.XMLStreamException;
  */
 public class XMLStreamReaderException extends RuntimeException {
     public XMLStreamReaderException(String message, XMLStreamException e) {
-
+        super(message,e);
     }
 }

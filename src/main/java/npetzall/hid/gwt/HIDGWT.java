@@ -44,6 +44,8 @@ public class HIDGWT {
         return HIDExchange
                 .newExchange()
                 .setMatcher(context.hidMatcher)
+                .setDefaultContextAttributes(context.tokenReplacements)
+                .setDataExtractor(context.hidDataExtractor)
                 .setResponse(context.hidResponse)
                 .setDelayBeforeStatusResponse(context.delayStatusFor)
                 .setStatusCode(context.respondWithStatusCode)

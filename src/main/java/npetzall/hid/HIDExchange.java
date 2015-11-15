@@ -12,6 +12,9 @@ import npetzall.hid.request.HIDMatchers;
 import npetzall.hid.response.HIDResponseDecorator;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Created by nosse on 2015-11-04.
@@ -19,6 +22,7 @@ import java.io.IOException;
 public class HIDExchange {
 
     private HIDMatcher hidMatcher = HIDMatchers.alwaysTrue();
+    private Map<String,String> defaultContextAttributes = new HashMap<>();
     private HIDDataExtractor hidDataExtractor = new HIDNoopDataExtractor();
     private HIDResponseDecorator hidResponse;
 
@@ -45,7 +49,15 @@ public class HIDExchange {
         return hidMatcher.matches(hidRequest);
     }
 
+    public HIDExchange setDefaultContextAttributes(Map<String,String> contextAttributes) {
+        defaultContextAttributes.putAll(contextAttributes);
+        return this;
+    }
+
     public void extractData(HIDRequest request, HIDExchangeContextImpl exchangeContext) {
+        for(Entry<String,String> entry : defaultContextAttributes.entrySet()) {
+            exchangeContext.addAttribute(entry.getKey(), entry.getValue());
+        }
         hidDataExtractor.extract(request, exchangeContext);
     }
 
@@ -77,4 +89,5 @@ public class HIDExchange {
         hidResponse.shouldClose(shouldClose);
         return this;
     }
+
 }

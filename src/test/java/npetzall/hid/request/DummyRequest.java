@@ -12,9 +12,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-/**
- * Created by nosse on 2015-11-09.
- */
 public class DummyRequest implements HIDRequest {
 
     private String protocol;

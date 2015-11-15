@@ -1,4 +1,4 @@
-package npetzall.hid.io.exceptions;
+package npetzall.hid.exception.io;
 
 import java.io.IOException;
 

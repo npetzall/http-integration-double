@@ -3,6 +3,7 @@ package npetzall.hid.gwt;
 import npetzall.hid.api.request.HIDDataExtractor;
 import npetzall.hid.api.request.HIDMatcher;
 import npetzall.hid.api.response.HIDResponse;
+import npetzall.hid.exchange.extractor.HIDNoopDataExtractor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,8 @@ public class HIDGWTContext {
 
     final String contextPath;
     HIDMatcher hidMatcher;
-    HIDDataExtractor hidDataExtractor;
+    Map<String,String> tokenReplacements = new HashMap<>();
+    HIDDataExtractor hidDataExtractor = new HIDNoopDataExtractor();
     HIDResponse hidResponse;
     Map<String,Set<String>> headers = new HashMap<>();
     long delayStatusFor = 0;
@@ -31,6 +33,11 @@ public class HIDGWTContext {
 
     public HIDGWTContext whenRequestMatches(HIDMatcher hidMatcher) {
         this.hidMatcher = hidMatcher;
+        return this;
+    }
+
+    public HIDGWTContext addTokenReplacement(String token, String replacement) {
+        tokenReplacements.put(token, replacement);
         return this;
     }
 

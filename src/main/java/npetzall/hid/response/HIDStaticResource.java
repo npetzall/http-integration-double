@@ -2,7 +2,7 @@ package npetzall.hid.response;
 
 import npetzall.hid.api.exchange.HIDExchangeContext;
 import npetzall.hid.api.response.HIDResponse;
-import npetzall.hid.io.exceptions.RuntimeIOException;
+import npetzall.hid.exception.io.RuntimeIOException;
 
 import java.io.*;
 import java.nio.charset.Charset;

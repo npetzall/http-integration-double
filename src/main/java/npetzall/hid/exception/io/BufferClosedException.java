@@ -1,4 +1,4 @@
-package npetzall.hid.io.exceptions;
+package npetzall.hid.exception.io;
 
 /**
  * Created by nosse on 2015-11-12.

@@ -1,16 +1,13 @@
 package npetzall.hid.io;
 
 import npetzall.hid.TestUtil;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by nosse on 2015-11-07.
- */
 public class SlowOutputStreamWriterTest {
 
     @Test

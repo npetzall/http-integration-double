@@ -2,7 +2,7 @@ package npetzall.hid.request.matchers.xml;
 
 import npetzall.hid.api.request.HIDMatcher;
 import npetzall.hid.api.request.HIDRequest;
-import npetzall.hid.request.matchers.xml.exception.XMLStreamReaderException;
+import npetzall.hid.exception.xml.XMLStreamReaderException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -31,7 +31,7 @@ public abstract class AbstractQNameMatcher implements HIDMatcher {
             XMLStreamReader xmlStreamReader = XMLInputFactory.newFactory().createXMLStreamReader(inputStream);
             return doMatches(xmlStreamReader);
         } catch (XMLStreamException e) {
-            throw new XMLStreamReaderException("Failed creating XMLStreamReader", e);
+            throw new XMLStreamReaderException("Failed creating XMLStreamReader when matching QName", e);
         } finally {
             closeQuietly(inputStream);
         }

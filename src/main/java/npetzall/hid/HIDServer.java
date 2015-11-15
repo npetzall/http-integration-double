@@ -1,7 +1,8 @@
 package npetzall.hid;
 
 import com.sun.net.httpserver.HttpServer;
-import npetzall.hid.io.exceptions.RuntimeIOException;
+import npetzall.hid.exception.URLException;
+import npetzall.hid.exception.io.RuntimeIOException;
 
 import java.io.IOException;
 import java.net.*;
@@ -72,19 +73,19 @@ public class HIDServer {
         try {
             return new URL("http://" + httpServer.getAddress().getHostString() + ":" + httpServer.getAddress().getPort() + path);
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Unable to create URL for context: + contextPath",e);
+            throw new URLException("Unable to create URL for context: + contextPath",e);
         }
     }
 
     private static void checkPath(String path) {
         if (path.charAt(0) != '/') {
-            throw new RuntimeException("Path must begin with /");
+            throw new URLException("Path must begin with /");
         }
     }
 
     private void checkServer() {
         if (httpServer == null) {
-            throw new RuntimeException("Server doesnt exist");
+            throw new URLException("Server doesnt exist");
         }
     }
 }
