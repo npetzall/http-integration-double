@@ -2,9 +2,12 @@ package npetzall.hid.response;
 
 import npetzall.hid.api.exchange.HIDExchangeContext;
 import npetzall.hid.api.response.HIDResponse;
+import npetzall.hid.exception.io.RuntimeIOException;
 import npetzall.hid.io.TokenReplaceInputStream;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -12,14 +15,18 @@ import java.nio.charset.StandardCharsets;
  */
 public class HIDTokenReplacer implements HIDResponse {
 
-    private InputStream inputStream;
+    private URL template;
 
-    public HIDTokenReplacer(InputStream inputStream) {
-        this.inputStream = inputStream;
+    public HIDTokenReplacer(URL template) {
+        this.template = template;
     }
 
     @Override
     public InputStream getInputStream(HIDExchangeContext exchangeContext) {
-        return new TokenReplaceInputStream(inputStream, StandardCharsets.UTF_8, exchangeContext);
+        try {
+            return new TokenReplaceInputStream(template.openStream(), StandardCharsets.UTF_8, exchangeContext);
+        } catch (IOException e) {
+            throw new RuntimeIOException("Unable to create inputStream from URL: " + template.toExternalForm() , e);
+        }
     }
 }

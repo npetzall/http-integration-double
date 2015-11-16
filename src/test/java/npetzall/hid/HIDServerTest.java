@@ -1,7 +1,7 @@
 package npetzall.hid;
 
 import npetzall.hid.request.HIDMatchers;
-import npetzall.hid.response.HIDStaticResource;
+import npetzall.hid.response.HIDResponses;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class HIDServerTest {
                         .setPath("/simple")
                         .addExchange(HIDExchange.newExchange()
                             .setMatcher(HIDMatchers.alwaysTrue())
-                            .setResponse(HIDStaticResource.fromString("hello"))
+                            .setResponse(HIDResponses.string("hello"))
                                     .setStatusCode(200))
 
         );
@@ -80,7 +80,7 @@ public class HIDServerTest {
                         .setPath("/simple")
                         .addExchange(HIDExchange.newExchange()
                                 .setMatcher(HIDMatchers.alwaysTrue())
-                                .setResponse(HIDStaticResource.fromString("hello"))
+                                .setResponse(HIDResponses.string("hello"))
                                 .setStatusCode(200))
 
         ).addContext(
@@ -88,7 +88,7 @@ public class HIDServerTest {
                         .setPath("/simpleDelay")
                         .addExchange(HIDExchange.newExchange()
                                 .setMatcher(HIDMatchers.alwaysTrue())
-                                .setResponse(HIDStaticResource.fromString("hello"))
+                                .setResponse(HIDResponses.string("hello"))
                                 .setDelayBeforeStatusResponse(100)
                                 .setStatusCode(200)
                                 .setDelayBeforeBody(100)
@@ -127,7 +127,7 @@ public class HIDServerTest {
                 givenContext("/echo")
                         .whenRequestMatches(and(httpMethodMatcher("POST"), elementQNameMatcher("","message")))
                         .thenExtract(xPathExtractor("/request/message","message"))
-                        .thenRespondWith(tokenReplacer(TestUtil.getResourceStream("/responses/EchoResponse.xml")))
+                        .thenRespondWith(tokenReplacer(TestUtil.getResourceURL("/responses/EchoResponse.xml")))
                         .delayStatusFor(0)
                         .respondWithStatusCode(200)
                         .delayResponseBodyFor(0)
@@ -147,6 +147,16 @@ public class HIDServerTest {
         httpClient.getResponseCode();
         String response = new String(TestUtil.readInputStreamToByteArray(httpClient.getInputStream()), StandardCharsets.UTF_8);
         assertThat(response).isXmlEqualTo("<response><echo>hello</echo></response>");
+
+        httpClient = (HttpURLConnection) hidServer.createURL("/echo").openConnection();
+        httpClient.setRequestMethod("POST");
+        httpClient.setDoOutput(true);
+        httpClient.setDoInput(true);
+        httpClient.getOutputStream().write("<request><message>yhello</message></request>".getBytes(StandardCharsets.UTF_8));
+        httpClient.getOutputStream().close();
+        httpClient.getResponseCode();
+        response = new String(TestUtil.readInputStreamToByteArray(httpClient.getInputStream()), StandardCharsets.UTF_8);
+        assertThat(response).isXmlEqualTo("<response><echo>yhello</echo></response>");
     }
 
     @Test
@@ -155,7 +165,7 @@ public class HIDServerTest {
                 givenContext("/echo")
                         .whenRequestMatches(and(httpMethodMatcher("POST"), elementQNameMatcher("","message")))
                         .addTokenReplacement("message","hello")
-                        .thenRespondWith(tokenReplacer(TestUtil.getResourceStream("/responses/EchoResponse.xml")))
+                        .thenRespondWith(tokenReplacer(TestUtil.getResourceURL("/responses/EchoResponse.xml")))
                         .delayStatusFor(0)
                         .respondWithStatusCode(200)
                         .delayResponseBodyFor(0)
@@ -175,6 +185,7 @@ public class HIDServerTest {
         httpClient.getResponseCode();
         String response = new String(TestUtil.readInputStreamToByteArray(httpClient.getInputStream()), StandardCharsets.UTF_8);
         assertThat(response).isXmlEqualTo("<response><echo>hello</echo></response>");
+
     }
 
 

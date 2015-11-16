@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +19,14 @@ public class IOUtils {
 
     private IOUtils() {
 
+    }
+
+    public static byte[] urlToBytes(URL url) {
+        try {
+            return intputStreamToBytes(url.openStream());
+        } catch (IOException e) {
+            throw new RuntimeIOException("Unable to create inputStream from URL: " + url.toExternalForm() , e);
+        }
     }
 
     public static byte[] intputStreamToBytes(InputStream inputStream) {

@@ -6,8 +6,8 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-import static npetzall.hid.TestUtil.getResourceStream;
-import static npetzall.hid.TestUtil.readInputStreamToByteArray;
+import static npetzall.hid.TestUtil.getResourceURL;
+import static npetzall.hid.TestUtil.readURLToByteArray;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -25,8 +25,8 @@ public class XPathExtractorTest {
         XPathExtractor xPathExtractor = new XPathExtractor("/request/message","message");
         HIDExchangeContextImpl exchangeContext = new HIDExchangeContextImpl();
         DummyRequest dummyRequest = new DummyRequest().request(
-                readInputStreamToByteArray(
-                        getResourceStream("/requests/EchoRequest.xml")));
+                readURLToByteArray(
+                        getResourceURL("/requests/EchoRequest.xml")));
         xPathExtractor.extract(dummyRequest,exchangeContext);
         assertThat(exchangeContext.getAttribute("message")).isEqualTo("hello");
     }

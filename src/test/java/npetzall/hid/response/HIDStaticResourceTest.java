@@ -1,6 +1,7 @@
 package npetzall.hid.response;
 
 import npetzall.hid.TestUtil;
+import npetzall.hid.api.response.HIDResponse;
 import org.testng.annotations.Test;
 
 import java.io.FileInputStream;
@@ -16,30 +17,30 @@ public class HIDStaticResourceTest {
 
     @Test
     public void withStringDefaultEncoding() throws IOException {
-        InputStream in = HIDStaticResource.fromString(TEST_STRING).getInputStream(null);
+        InputStream in = HIDResponses.string(TEST_STRING).getInputStream(null);
         byte[] data = TestUtil.readInputStreamToByteArray(in);
-        assertThat(new String(data, HIDStaticResource.DEFAULT_CHARSET)).isEqualTo(TEST_STRING);
+        assertThat(new String(data, HIDResponse.DEFAULT_CHARSET)).isEqualTo(TEST_STRING);
     }
 
     @Test
     public void withStringASCII() throws IOException {
-        InputStream in = HIDStaticResource.fromString(TEST_STRING, StandardCharsets.US_ASCII).getInputStream(null);
+        InputStream in = HIDResponses.string(TEST_STRING, StandardCharsets.US_ASCII).getInputStream(null);
         byte[] data = TestUtil.readInputStreamToByteArray(in);
         assertThat(new String(data, StandardCharsets.US_ASCII)).isEqualTo(TEST_STRING);
     }
 
     @Test
-    public void withInputStream() throws IOException {
-        InputStream in = HIDStaticResource.fromInputStream(getClass().getResourceAsStream("/responses/EchoResponse.xml"))
+    public void withURL() throws IOException {
+        InputStream in = HIDResponses.url(getClass().getResource("/responses/EchoResponse.xml"))
                 .getInputStream(null);
         byte[] dataFromHIDStaticResource = TestUtil.readInputStreamToByteArray(in);
-        byte[] expected = TestUtil.readInputStreamToByteArray(TestUtil.getResourceStream("/responses/EchoResponse.xml"));
+        byte[] expected = TestUtil.readURLToByteArray(TestUtil.getResourceURL("/responses/EchoResponse.xml"));
         assertThat(dataFromHIDStaticResource).containsExactly(expected);
     }
 
     @Test
     public void withFile() throws IOException {
-        InputStream in = HIDStaticResource.fromFile("src/test/resources/responses/EchoResponse.xml").getInputStream(null);
+        InputStream in = HIDResponses.file("src/test/resources/responses/EchoResponse.xml").getInputStream(null);
         byte[] dataFromHIDStaticResource = TestUtil.readInputStreamToByteArray(in);
         byte[] expected = TestUtil.readInputStreamToByteArray(new FileInputStream("src/test/resources/responses/EchoResponse.xml"));
         assertThat(dataFromHIDStaticResource).containsExactly(expected);
@@ -47,6 +48,6 @@ public class HIDStaticResourceTest {
 
     @Test(expectedExceptions = RuntimeException.class)
     public void nonExistingFile() {
-        HIDStaticResource.fromFile("sdfas/sdf");
+        HIDResponses.file("sdfas/sdf");
     }
 }

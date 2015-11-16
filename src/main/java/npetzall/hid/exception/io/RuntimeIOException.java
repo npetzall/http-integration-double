@@ -13,4 +13,8 @@ public class RuntimeIOException extends RuntimeException {
     public RuntimeIOException(String message, IOException ioExcetion) {
         super(message,ioExcetion);
     }
+
+    public RuntimeIOException(String message) {
+        super(message);
+    }
 }

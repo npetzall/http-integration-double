@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-import static npetzall.hid.TestUtil.getResourceStream;
-import static npetzall.hid.TestUtil.readInputStreamToByteArray;
+import static npetzall.hid.TestUtil.getResourceURL;
+import static npetzall.hid.TestUtil.readURLToByteArray;
 import static npetzall.hid.request.HIDMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,14 +48,14 @@ public class MatchersTest {
         assertThat(
                 matcher.matches(
                         new DummyRequest().request(
-                                readInputStreamToByteArray(
-                                        getResourceStream("/matchers/QNameMatcherReverse.xml"))))
+                                readURLToByteArray(
+                                        getResourceURL("/matchers/QNameMatcherReverse.xml"))))
         ).isTrue();
         assertThat(
                 matcher.matches(
                         new DummyRequest().request(
-                                readInputStreamToByteArray(
-                                        getResourceStream("/matchers/QNameMatcherUppercase.xml"))))
+                                readURLToByteArray(
+                                        getResourceURL("/matchers/QNameMatcherUppercase.xml"))))
         ).isFalse();
     }
 
@@ -65,14 +65,14 @@ public class MatchersTest {
         assertThat(
                 matcher.matches(
                         new DummyRequest().request(
-                                readInputStreamToByteArray(
-                                        getResourceStream("/matchers/QNameMatcherReverse.xml"))))
+                                readURLToByteArray(
+                                        getResourceURL("/matchers/QNameMatcherReverse.xml"))))
         ).isTrue();
         assertThat(
                 matcher.matches(
                         new DummyRequest().request(
-                                readInputStreamToByteArray(
-                                        getResourceStream("/matchers/QNameMatcherUppercase.xml"))))
+                                readURLToByteArray(
+                                        getResourceURL("/matchers/QNameMatcherUppercase.xml"))))
         ).isFalse();
     }
 

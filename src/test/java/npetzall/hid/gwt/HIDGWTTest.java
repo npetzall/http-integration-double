@@ -4,7 +4,7 @@ import npetzall.hid.HIDServer;
 import npetzall.hid.TestUtil;
 import npetzall.hid.request.HIDMatchers;
 import npetzall.hid.request.matchers.HttpMethodMatcher;
-import npetzall.hid.response.HIDStaticResource;
+import npetzall.hid.response.HIDResponses;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class HIDGWTTest {
         HIDServer hidServer = hid(
                 givenContext("/simpleOne")
                         .whenRequestMatches(HIDMatchers.alwaysTrue())
-                        .thenRespondWith(HIDStaticResource.fromString("hello"))
+                        .thenRespondWith(HIDResponses.string("hello"))
                         .addHeader("custom", "first")
                         .addHeader("custom", "second")
                         .delayStatusFor(0)
@@ -32,14 +32,14 @@ public class HIDGWTTest {
                         .shouldClose(true),
                 givenContext("/simpleTwo")
                         .whenRequestMatches(new HttpMethodMatcher("GET"))
-                        .thenRespondWith(HIDStaticResource.fromString("bye"))
+                        .thenRespondWith(HIDResponses.string("bye"))
                         .delayStatusFor(100)
                         .respondWithStatusCode(200)
                         .delayResponseBodyFor(100)
                         .writeBodyFor(500),
                 givenContext("/simpleTwo")
                         .whenRequestMatches(new HttpMethodMatcher("POST"))
-                        .thenRespondWith(HIDStaticResource.fromString("eyb"))
+                        .thenRespondWith(HIDResponses.string("eyb"))
                         .delayStatusFor(0)
                         .respondWithStatusCode(200)
                         .delayResponseBodyFor(0)
