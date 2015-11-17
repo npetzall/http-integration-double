@@ -10,9 +10,6 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Created by nosse on 2015-11-13.
- */
 public class IOUtils {
 
     private static final Logger LOGGER = Logger.getLogger(IOUtils.class.getName());

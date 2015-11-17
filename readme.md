@@ -34,11 +34,13 @@ The following thingis exists:
 
 #### Extractors
 * XPath (currently not namespace aware)
+* RegEx (will only extract named groups and they will replace [groupName]_[n]
 * Defaults to NOOP
 
 #### Response
 * StaticResource
 * TokenReplacer
+* HalfResponse
 
 ### Example and then description
 

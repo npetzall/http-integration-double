@@ -1,6 +1,7 @@
-package npetzall.hid.response;
+package npetzall.hid.test.unit.response;
 
-import npetzall.hid.TestUtil;
+import npetzall.hid.response.HIDResponses;
+import npetzall.hid.test.TestUtil;
 import npetzall.hid.api.response.HIDResponse;
 import npetzall.hid.exchange.HIDExchangeContextImpl;
 import org.testng.annotations.Test;
@@ -12,9 +13,6 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by nosse on 2015-11-15.
- */
 public class HIDTokenReplacerTest {
 
     @Test

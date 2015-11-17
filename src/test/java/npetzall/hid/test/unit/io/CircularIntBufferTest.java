@@ -1,5 +1,6 @@
-package npetzall.hid.io;
+package npetzall.hid.test.unit.io;
 
+import npetzall.hid.io.CircularIntBuffer;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

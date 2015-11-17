@@ -4,9 +4,6 @@ import npetzall.hid.api.exchange.HIDExchangeContext;
 
 import java.util.*;
 
-/**
- * Created by nosse on 2015-11-08.
- */
 public class HIDExchangeContextImpl implements HIDExchangeContext {
 
     private final long exchangeStarted;

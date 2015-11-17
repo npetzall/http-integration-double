@@ -1,15 +1,11 @@
-package npetzall.hid.request;
+package npetzall.hid.request.matchers;
 
 import npetzall.hid.api.request.HIDMatcher;
-import npetzall.hid.request.matchers.*;
 import npetzall.hid.request.matchers.logic.AndMatcher;
 import npetzall.hid.request.matchers.logic.OrMatcher;
 import npetzall.hid.request.matchers.xml.AttributeQNameMatcher;
 import npetzall.hid.request.matchers.xml.ElementQNameMatcher;
 
-/**
- * Created by nosse on 2015-11-04.
- */
 public class HIDMatchers {
 
     private static final AlwaysTrueMatcher ALWAYS_TRUE_MATCHER = new AlwaysTrueMatcher();

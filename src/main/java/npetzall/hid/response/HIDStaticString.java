@@ -8,9 +8,6 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Created by nosse on 2015-11-16.
- */
 public class HIDStaticString implements HIDResponse {
 
     private final Charset charset;

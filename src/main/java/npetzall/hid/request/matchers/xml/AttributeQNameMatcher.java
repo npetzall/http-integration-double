@@ -5,9 +5,6 @@ import npetzall.hid.api.request.HIDMatcher;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-/**
- * Created by nosse on 2015-11-04.
- */
 public class AttributeQNameMatcher extends AbstractQNameMatcher implements HIDMatcher {
 
     public AttributeQNameMatcher(String nameSpace, String localPart) {

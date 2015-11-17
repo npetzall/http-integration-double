@@ -5,9 +5,6 @@ import npetzall.hid.api.request.HIDRequest;
 
 import java.util.List;
 
-/**
- * Created by nosse on 2015-11-09.
- */
 public class HeaderMatcher implements HIDMatcher {
 
     private final String key;

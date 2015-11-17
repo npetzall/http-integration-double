@@ -3,9 +3,6 @@ package npetzall.hid.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * Created by nosse on 2015-11-07.
- */
 public class SlowOutputStreamWriter {
 
     private SlowOutputStreamWriter() {

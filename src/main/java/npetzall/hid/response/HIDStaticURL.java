@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-/**
- * Created by nosse on 2015-11-16.
- */
 public class HIDStaticURL implements HIDResponse {
 
     private final URL resourceUrl;

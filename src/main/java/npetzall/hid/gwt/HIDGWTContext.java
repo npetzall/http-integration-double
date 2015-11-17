@@ -3,16 +3,13 @@ package npetzall.hid.gwt;
 import npetzall.hid.api.request.HIDDataExtractor;
 import npetzall.hid.api.request.HIDMatcher;
 import npetzall.hid.api.response.HIDResponse;
-import npetzall.hid.exchange.extractor.HIDNoopDataExtractor;
+import npetzall.hid.request.extractor.HIDNoopDataExtractor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-/**
- * Created by nosse on 2015-11-08.
- */
 public class HIDGWTContext {
 
     final String contextPath;

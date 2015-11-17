@@ -2,9 +2,6 @@ package npetzall.hid.exception.io;
 
 import java.io.IOException;
 
-/**
- * Created by nosse on 2015-11-12.
- */
 public class RuntimeIOException extends RuntimeException {
     public RuntimeIOException(IOException ioException) {
         super(ioException);

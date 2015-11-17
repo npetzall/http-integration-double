@@ -1,18 +1,17 @@
-package npetzall.hid.request.matchers;
+package npetzall.hid.test.unit.request.matchers;
 
 import npetzall.hid.api.request.HIDMatcher;
-import npetzall.hid.request.DummyRequest;
+import npetzall.hid.test.DummyRequest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-import static npetzall.hid.TestUtil.getResourceURL;
-import static npetzall.hid.TestUtil.readURLToByteArray;
-import static npetzall.hid.request.HIDMatchers.*;
+import static npetzall.hid.test.TestUtil.getResourceURL;
+import static npetzall.hid.test.TestUtil.readURLToByteArray;
+import static npetzall.hid.request.matchers.HIDMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
-
 
 public class MatchersTest {
 

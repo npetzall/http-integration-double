@@ -1,6 +1,7 @@
-package npetzall.hid.io;
+package npetzall.hid.test.unit.io;
 
-import npetzall.hid.TestUtil;
+import npetzall.hid.io.SlowOutputStreamWriter;
+import npetzall.hid.test.TestUtil;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayOutputStream;

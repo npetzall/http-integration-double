@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-/**
- * Created by nosse on 2015-11-04.
- */
 public class HIDConfiguration {
 
     private int firstPort;

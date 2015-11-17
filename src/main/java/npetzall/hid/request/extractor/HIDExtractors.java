@@ -1,6 +1,6 @@
-package npetzall.hid.exchange.extractor;
+package npetzall.hid.request.extractor;
 
-import npetzall.hid.exchange.extractor.xml.XPathExtractor;
+import npetzall.hid.request.extractor.xml.XPathExtractor;
 
 public class HIDExtractors {
 
@@ -10,5 +10,9 @@ public class HIDExtractors {
 
     public static XPathExtractor xPathExtractor(String xPath, String variableName) {
         return new XPathExtractor(xPath, variableName);
+    }
+
+    public static RegExExtractor regExExtractor(String regEx) {
+        return new RegExExtractor(regEx);
     }
 }

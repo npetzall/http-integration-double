@@ -8,9 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-/**
- * Created by nosse on 2015-11-11.
- */
 public class HIDResponses {
 
     private HIDResponses() {
@@ -43,5 +40,9 @@ public class HIDResponses {
         } catch (MalformedURLException e) {
             throw new RuntimeIOException("Failed to create URL from File from String: "+ filePath,e);
         }
+    }
+
+    public static HIDResponse halfResponse(HIDResponse hidResponse) {
+        return new HIDHalfResponse(hidResponse);
     }
 }

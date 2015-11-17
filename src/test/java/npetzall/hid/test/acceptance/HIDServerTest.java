@@ -1,7 +1,10 @@
-package npetzall.hid;
+package npetzall.hid.test.acceptance;
 
-import npetzall.hid.request.HIDMatchers;
+import npetzall.hid.*;
+import npetzall.hid.request.matchers.HIDMatchers;
+import npetzall.hid.request.matchers.HttpMethodMatcher;
 import npetzall.hid.response.HIDResponses;
+import npetzall.hid.test.TestUtil;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -9,10 +12,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import static npetzall.hid.exchange.extractor.HIDExtractors.xPathExtractor;
+import static npetzall.hid.request.extractor.HIDExtractors.xPathExtractor;
 import static npetzall.hid.gwt.HIDGWT.givenContext;
 import static npetzall.hid.gwt.HIDGWT.hid;
-import static npetzall.hid.request.HIDMatchers.*;
+import static npetzall.hid.request.matchers.HIDMatchers.*;
 import static npetzall.hid.response.HIDResponses.tokenReplacer;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,33 +44,6 @@ public class HIDServerTest {
 
         hidServerOne.stop();
         hidServerTwo.stop();
-    }
-
-    @Test
-    public void simpleExchange() throws IOException {
-        HIDConfiguration hidConfiguration = new HIDConfiguration();
-        hidConfiguration
-                .setFirstPort(1234)
-                .setLastPort(1243).addContext(
-                HIDContext.newContext()
-                        .setPath("/simple")
-                        .addExchange(HIDExchange.newExchange()
-                            .setMatcher(HIDMatchers.alwaysTrue())
-                            .setResponse(HIDResponses.string("hello"))
-                                    .setStatusCode(200))
-
-        );
-        HIDServer hidServer = new HIDServer(hidConfiguration);
-        hidServer.start();
-
-        HttpURLConnection httpClient = (HttpURLConnection) hidServer.createURL("/simple").openConnection();
-        httpClient.setRequestMethod("GET");
-        httpClient.getResponseCode();
-        byte[] response = TestUtil.readInputStreamToByteArray(httpClient.getInputStream());
-
-        assertThat(new String(response, StandardCharsets.UTF_8)).isEqualTo("hello");
-
-        hidServer.stop();
     }
 
     @Test
@@ -186,6 +162,60 @@ public class HIDServerTest {
         String response = new String(TestUtil.readInputStreamToByteArray(httpClient.getInputStream()), StandardCharsets.UTF_8);
         assertThat(response).isXmlEqualTo("<response><echo>hello</echo></response>");
 
+    }
+
+    @Test
+    public void simple() throws IOException {
+        HIDServer hidServer = hid(
+                givenContext("/simpleOne")
+                        .whenRequestMatches(HIDMatchers.alwaysTrue())
+                        .thenRespondWith(HIDResponses.string("hello"))
+                        .addHeader("custom", "first")
+                        .addHeader("custom", "second")
+                        .delayStatusFor(0)
+                        .respondWithStatusCode(200)
+                        .delayResponseBodyFor(0)
+                        .writeBodyFor(0)
+                        .shouldClose(true),
+                givenContext("/simpleTwo")
+                        .whenRequestMatches(new HttpMethodMatcher("GET"))
+                        .thenRespondWith(HIDResponses.string("bye"))
+                        .delayStatusFor(100)
+                        .respondWithStatusCode(200)
+                        .delayResponseBodyFor(100)
+                        .writeBodyFor(500),
+                givenContext("/simpleTwo")
+                        .whenRequestMatches(new HttpMethodMatcher("POST"))
+                        .thenRespondWith(HIDResponses.string("eyb"))
+                        .delayStatusFor(0)
+                        .respondWithStatusCode(200)
+                        .delayResponseBodyFor(0)
+                        .writeBodyFor(0)
+                        .shouldClose(true)
+        )
+                .firstPort(1233)
+                .lastPort(1244)
+                .start();
+
+        HttpURLConnection httpClient = (HttpURLConnection) hidServer.createURL("/simpleOne").openConnection();
+        httpClient.setRequestMethod("GET");
+        httpClient.getResponseCode();
+        byte[] responseOne = TestUtil.readInputStreamToByteArray(httpClient.getInputStream());
+
+        assertThat(new String(responseOne, StandardCharsets.UTF_8)).isEqualTo("hello");
+
+        long timestamp = System.currentTimeMillis();
+        httpClient = (HttpURLConnection) hidServer.createURL("/simpleTwo").openConnection();
+        httpClient.setRequestMethod("GET");
+        httpClient.getResponseCode();
+        byte[] responseTwo = TestUtil.readInputStreamToByteArray(httpClient.getInputStream());
+        long timestampRequestTwo = System.currentTimeMillis() - timestamp;
+
+        assertThat(new String(responseTwo, StandardCharsets.UTF_8)).isEqualTo("bye");
+
+        assertThat(timestampRequestTwo).isBetween(700L, 800L);
+
+        hidServer.stop();
     }
 
 

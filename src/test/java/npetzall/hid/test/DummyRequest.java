@@ -1,4 +1,4 @@
-package npetzall.hid.request;
+package npetzall.hid.test;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpPrincipal;

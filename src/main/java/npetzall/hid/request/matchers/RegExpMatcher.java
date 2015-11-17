@@ -5,9 +5,6 @@ import npetzall.hid.api.request.HIDRequest;
 
 import java.util.regex.Pattern;
 
-/**
- * Created by nosse on 2015-11-09.
- */
 public class RegExpMatcher implements HIDMatcher {
 
     private final Pattern pattern;

@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-/**
- * Created by nosse on 2015-11-11.
- */
 public class TokenReplaceInputStream extends InputStream {
 
     private static final String PRE_FIX = "${";

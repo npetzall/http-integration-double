@@ -1,4 +1,4 @@
-package npetzall.hid.exchange.extractor;
+package npetzall.hid.request.extractor;
 
 import npetzall.hid.api.exchange.HIDExchangeContext;
 import npetzall.hid.api.request.*;

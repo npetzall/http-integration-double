@@ -6,9 +6,9 @@ import npetzall.hid.api.request.HIDMatcher;
 import npetzall.hid.api.request.HIDRequest;
 import npetzall.hid.api.response.HIDResponse;
 import npetzall.hid.exchange.HIDExchangeContextImpl;
-import npetzall.hid.exchange.extractor.HIDNoopDataExtractor;
+import npetzall.hid.request.extractor.HIDNoopDataExtractor;
 import npetzall.hid.request.HIDHttpExchangeWrapper;
-import npetzall.hid.request.HIDMatchers;
+import npetzall.hid.request.matchers.HIDMatchers;
 import npetzall.hid.response.HIDResponseDecorator;
 
 import java.io.IOException;
@@ -16,9 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/**
- * Created by nosse on 2015-11-04.
- */
 public class HIDExchange {
 
     private HIDMatcher hidMatcher = HIDMatchers.alwaysTrue();

@@ -1,13 +1,10 @@
-package npetzall.hid;
+package npetzall.hid.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-/**
- * Created by nosse on 2015-11-05.
- */
 public class TestUtil {
 
     public static byte[] readInputStreamToByteArray(InputStream inputStream) throws IOException {

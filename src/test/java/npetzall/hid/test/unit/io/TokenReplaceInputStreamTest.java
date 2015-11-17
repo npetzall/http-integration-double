@@ -1,6 +1,7 @@
-package npetzall.hid.io;
+package npetzall.hid.test.unit.io;
 
-import npetzall.hid.TestUtil;
+import npetzall.hid.io.TokenReplaceInputStream;
+import npetzall.hid.test.TestUtil;
 import npetzall.hid.exchange.HIDExchangeContextImpl;
 import org.testng.annotations.Test;
 

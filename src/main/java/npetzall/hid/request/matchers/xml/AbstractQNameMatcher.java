@@ -13,9 +13,6 @@ import java.io.InputStream;
 
 import static npetzall.hid.io.IOUtils.closeQuietly;
 
-/**
- * Created by nosse on 2015-11-12.
- */
 public abstract class AbstractQNameMatcher implements HIDMatcher {
 
     protected final QName qName;

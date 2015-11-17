@@ -1,6 +1,7 @@
-package npetzall.hid.response;
+package npetzall.hid.test.unit.response;
 
-import npetzall.hid.TestUtil;
+import npetzall.hid.response.HIDResponses;
+import npetzall.hid.test.TestUtil;
 import npetzall.hid.api.response.HIDResponse;
 import org.testng.annotations.Test;
 

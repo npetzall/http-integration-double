@@ -8,9 +8,6 @@ import npetzall.hid.HIDExchange;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by nosse on 2015-11-08.
- */
 public class HIDGWT {
 
     private Map<String, HIDContext> contexts = new HashMap<>();

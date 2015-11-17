@@ -9,7 +9,7 @@ apply plugin: 'java'
 apply plugin: 'findbugs'
 apply plugin: 'jdepend'
 apply plugin: 'pmd'
-apply plugin: "jacoco"
+apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
 
 sourceCompatibility = 1.7

@@ -10,9 +10,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Created by nosse on 2015-11-11.
- */
 public class HIDTokenReplacer implements HIDResponse {
 
     private URL template;

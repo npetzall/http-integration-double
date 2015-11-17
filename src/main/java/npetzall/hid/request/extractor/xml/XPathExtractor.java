@@ -1,4 +1,4 @@
-package npetzall.hid.exchange.extractor.xml;
+package npetzall.hid.request.extractor.xml;
 
 import npetzall.hid.api.exchange.HIDExchangeContext;
 import npetzall.hid.api.request.HIDDataExtractor;
