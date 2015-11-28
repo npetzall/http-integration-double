@@ -21,10 +21,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HIDServerTest {
 
+    private static int FIRST_PORT = 1234;
+    private static int LAST_PORT = 1334;
+
     @Test
     public void doubleHIDs() {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
-        hidConfiguration.setFirstPort(1234).setLastPort(1243);
+        hidConfiguration.setFirstPort(FIRST_PORT).setLastPort(LAST_PORT);
         HIDServer hidServerOne = new HIDServer(hidConfiguration);
         hidServerOne.start();
 
@@ -50,8 +53,8 @@ public class HIDServerTest {
     public void checkDelay() throws IOException {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
         hidConfiguration
-                .setFirstPort(1234)
-                .setLastPort(1243).addContext(
+                .setFirstPort(FIRST_PORT)
+                .setLastPort(LAST_PORT).addContext(
                 HIDContext.newContext()
                         .setPath("/simple")
                         .addExchange(HIDExchange.newExchange()
@@ -102,7 +105,7 @@ public class HIDServerTest {
         HIDServer hidServer = hid(
                 givenContext("/echo")
                         .whenRequestMatches(and(httpMethodMatcher("POST"), elementQNameMatcher("","message")))
-                        .thenExtract(xPathExtractor("/request/message","message"))
+                        .thenExtract(xPathExtractor().xpath("/request/message","message"))
                         .thenRespondWith(tokenReplacer(TestUtil.getResourceURL("/responses/EchoResponse.xml")))
                         .delayStatusFor(0)
                         .respondWithStatusCode(200)
@@ -110,8 +113,8 @@ public class HIDServerTest {
                         .writeBodyFor(0)
                         .shouldClose(true)
         )
-                .firstPort(1234)
-                .lastPort(1255)
+                .firstPort(FIRST_PORT)
+                .lastPort(LAST_PORT)
                 .start();
 
         HttpURLConnection httpClient = (HttpURLConnection) hidServer.createURL("/echo").openConnection();
@@ -148,8 +151,8 @@ public class HIDServerTest {
                         .writeBodyFor(0)
                         .shouldClose(true)
         )
-                .firstPort(1234)
-                .lastPort(1255)
+                .firstPort(FIRST_PORT)
+                .lastPort(LAST_PORT)
                 .start();
 
         HttpURLConnection httpClient = (HttpURLConnection) hidServer.createURL("/echo").openConnection();
@@ -193,8 +196,8 @@ public class HIDServerTest {
                         .writeBodyFor(0)
                         .shouldClose(true)
         )
-                .firstPort(1233)
-                .lastPort(1244)
+                .firstPort(FIRST_PORT)
+                .lastPort(LAST_PORT)
                 .start();
 
         HttpURLConnection httpClient = (HttpURLConnection) hidServer.createURL("/simpleOne").openConnection();
@@ -222,7 +225,7 @@ public class HIDServerTest {
     @Test(expectedExceptions = RuntimeException.class)
     public void incorrectPath() {
         HIDConfiguration hidConfiguration = new HIDConfiguration();
-        hidConfiguration.setFirstPort(1234).setLastPort(1243);
+        hidConfiguration.setFirstPort(FIRST_PORT).setLastPort(LAST_PORT);
         HIDServer hidServer = new HIDServer(hidConfiguration);
         hidServer.start();
         hidServer.createURL("hello");
@@ -231,7 +234,7 @@ public class HIDServerTest {
 
     @Test(expectedExceptions = RuntimeException.class)
     public void correctPathHIDnotStarted() {
-        HIDServer hidServer = new HIDServer(HIDConfiguration.newConfiguration().setFirstPort(1234).setLastPort(1243));
+        HIDServer hidServer = new HIDServer(HIDConfiguration.newConfiguration().setFirstPort(FIRST_PORT).setLastPort(LAST_PORT));
         hidServer.createURL("/hello");
     }
 

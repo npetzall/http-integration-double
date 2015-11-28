@@ -27,14 +27,14 @@ public class SlowOutputStreamWriterTest {
     @Test
     public void slowWriteDelayPerByte() throws IOException {
         byte[] dataIn = TestUtil.readURLToByteArray(TestUtil.getResourceURL("/matchers/QNameMatcherReverse.xml"));
-        assertThat(dataIn.length).isLessThan(300);
+        assertThat(dataIn.length).isLessThan(520);
         ByteArrayOutputStream dataOut = new ByteArrayOutputStream();
         long timeStamp = System.currentTimeMillis();
-        SlowOutputStreamWriter.slowWrite(dataIn, dataOut, 500);
+        SlowOutputStreamWriter.slowWrite(dataIn, dataOut, 800);
         long duration = System.currentTimeMillis() - timeStamp;
         assertThat(dataOut.toByteArray().length).isEqualTo(dataIn.length);
         assertThat(dataOut.toByteArray()).containsExactly(dataIn);
-        assertThat(duration).isBetween(500L,530L);
+        assertThat(duration).isBetween(800L,900L);
     }
 
 }

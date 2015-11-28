@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<exchange xmlns="http://npetzall/hid">
+<exchange xmlns="http://npetzall/hid" xmlns:nohid="http://npetzall/nohid">
     <request>
-        <reverse someother="yes" exists="true">
+        <reverse nohid:someother="no" someother="yes"  exists="true">
             <message>npetzall</message>
+            <!-- <nohid:message>nisse</nohid:message> -->
+            <message xmlns="http://npetzall/nohid">nils</message>
+        </reverse>
+        <reverse someother="false">
+            <message>someotherperson</message>
         </reverse>
     </request>
 </exchange>

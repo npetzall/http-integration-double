@@ -31,9 +31,10 @@ The following thingis exists:
 * URI
 * AttributeQName
 * ElementQName
+* XPath (namespace and attribute by ending with /@attributeName match first instance)
 
 #### Extractors
-* XPath (currently not namespace aware)
+* XPath (namespace and attribute by ending with /@attributeName will extract last match)
 * RegEx (will only extract named groups and they will replace [groupName]_[n]
 * Defaults to NOOP
 
@@ -47,7 +48,7 @@ The following thingis exists:
     HIDServer hidServer = hid(
                 givenContext("/echo")
                         .whenRequestMatches(and(httpMethodMatcher("POST"), elementQNameMatcher("","message")))
-                        .thenExtract(xPathExtractor("/request/message","message"))
+                        .thenExtract(xPathExtractor().xpath("/request/message","message"))
                         .thenRespondWith(tokenReplacer(TestUtil.getResourceStream("/responses/EchoResponse.xml")))
                         .delayStatusFor(0)
                         .respondWithStatusCode(200)
@@ -76,7 +77,7 @@ but might not if the request has in general a long latency.
 respondWithStatusCode() defaults to 200, use it you want to change.  
 delayResponseBodyFor() defaults to 0, time before starting to sending responsebody.  
 writeBodyFor() defautls to 0, time in milliseconds for sending the response.  
-shouldClose() defaults to true, I think that it will always close if full response according to header has been sent.
+shouldClose() defaults to true, I think that it will always close if full response according to header (Content-Length) has been sent.
 
 hid().firstPort() defaults to 1234, start of port range.
 hid().lastPort() defaults to 1342, end inclusive port range.

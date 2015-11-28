@@ -60,7 +60,7 @@ public class CircularIntBufferTest {
         cib.write(0);
     }
 
-    @Test
+    @Test(timeOut = 100L)
     public void quickReaderSlowWriter() throws InterruptedException {
         final CircularIntBuffer cib = new CircularIntBuffer(10);
         Thread reader = new Thread(new Runnable() {
