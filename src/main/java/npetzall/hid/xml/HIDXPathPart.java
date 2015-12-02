@@ -1,22 +1,18 @@
 package npetzall.hid.xml;
 
-import npetzall.hid.api.xml.HIDXmlElement;
+import npetzall.hid.api.xml.HIDXMLElement;
 
 import javax.xml.namespace.QName;
 
 public abstract class HIDXPathPart {
 
     enum Type{
-        ELEMENT, ELEMENT_WITH_REQUIREMENTS, ATTRIBUTE
+        ELEMENT, ELEMENT_WITH_REQUIREMENTS, ATTRIBUTE, TEXT
     }
 
     protected QName qName;
+    protected boolean wildCard;
     protected Type type;
-
-    private HIDXPathPart(String namespace, String localName, Type type) {
-        qName = new QName(namespace,localName);
-        this.type = type;
-    }
 
     public static HIDXPathPart element(String namespace,String localName) {
         return new HIDXPathElementPart(namespace, localName);
@@ -26,46 +22,54 @@ public abstract class HIDXPathPart {
         return new HIDXPathAttributePart(namespace,localName);
     }
 
-    public abstract boolean matches(HIDXmlElement hidXmlElement);
+    public static HIDXPathPart text() {
+        return new HIDXPathTextPart();
+    }
+
+    public abstract boolean matches(HIDXMLElement hidXmlElement);
+
+    protected boolean qNameEquals(QName other) {
+        if (wildCard) {
+            return qName.getLocalPart().equals(other.getLocalPart());
+        }
+        return qName.equals(other);
+    }
 
     public QName getName() {
         return qName;
     }
 
-    public boolean isAttribute() {
-        return Type.ATTRIBUTE.equals(type);
-    }
-
-    protected boolean lenientQNameEqual(QName other) {
-        return ("".equals(qName.getNamespaceURI())
-                && qName.getLocalPart().equals(other.getLocalPart()))
-                || qName.equals(other);
-    }
-
     static class HIDXPathElementPart extends HIDXPathPart {
         private HIDXPathElementPart(String namespace, String localName) {
-            super(namespace,localName,Type.ELEMENT);
+            qName = new QName(namespace,localName);
+            type = Type.ELEMENT;
+            wildCard = "*".equals(namespace);
         }
 
         @Override
-        public boolean matches(HIDXmlElement hidXmlElement) {
-            return lenientQNameEqual(hidXmlElement.getName());
+        public boolean matches(HIDXMLElement hidXmlElement) {
+            return qNameEquals(hidXmlElement.getName());
         }
     }
 
     static class HIDXPathAttributePart extends HIDXPathPart {
         private HIDXPathAttributePart(String namespace, String localName) {
-            super(namespace, localName,Type.ATTRIBUTE);
+            qName = new QName(namespace,localName);
+            type = Type.ATTRIBUTE;
+            wildCard = "*".equals(namespace);
         }
 
         @Override
-        public boolean matches(HIDXmlElement hidXmlElement) {
-            for(int i = 0; i< hidXmlElement.getAttributeCount(); i++) {
-                if(lenientQNameEqual(hidXmlElement.getAttributeName(i))) {
-                    return true;
-                }
-            }
-            return false;
+        public boolean matches(HIDXMLElement hidXmlElement) {
+            return hidXmlElement.hasAttribute(qName);
+        }
+    }
+
+    static class HIDXPathTextPart extends HIDXPathPart {
+
+        @Override
+        public boolean matches(HIDXMLElement hidXmlElement) {
+            return hidXmlElement.hasText();
         }
     }
 

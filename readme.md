@@ -31,10 +31,10 @@ The following thingis exists:
 * URI
 * AttributeQName
 * ElementQName
-* XPath (namespace and attribute by ending with /@attributeName match first instance)
+* XPath (namespace and attribute by ending with /@attributeName match first instance and /text() means it must have text)
 
 #### Extractors
-* XPath (namespace and attribute by ending with /@attributeName will extract last match)
+* XPath (namespace and attribute by ending with /@attributeName will extract last match and /text() makes sure it has text)
 * RegEx (will only extract named groups and they will replace [groupName]_[n]
 * Defaults to NOOP
 

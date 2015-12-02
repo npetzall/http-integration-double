@@ -2,13 +2,13 @@ package npetzall.hid.request.matchers.xml;
 
 import npetzall.hid.api.request.HIDMatcher;
 import npetzall.hid.api.request.HIDRequest;
+import npetzall.hid.api.xml.HIDXMLElement;
 import npetzall.hid.exception.xml.XMLStreamReaderException;
-import npetzall.hid.xml.HIDStreamReaderWrapper;
 import npetzall.hid.xml.HIDXPathProcessor;
+import npetzall.hid.xml.XMLElementStream;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import java.util.Map;
 
 public class XPathMatcher implements HIDMatcher {
@@ -28,14 +28,15 @@ public class XPathMatcher implements HIDMatcher {
     public boolean matches(HIDRequest hidRequest) {
         xPathProcessor.reset();
         try {
-            XMLStreamReader xmlStreamReader = XMLInputFactory.newFactory().createXMLStreamReader(hidRequest.getBodyStream());
-            while(xmlStreamReader.hasNext()) {
-                xmlStreamReader.next();
-                if (xmlStreamReader.isStartElement() && xPathProcessor.startElement(new HIDStreamReaderWrapper(xmlStreamReader))) {
+            HIDXMLElement element;
+            XMLElementStream xmlElementStream = new XMLElementStream(XMLInputFactory.newFactory().createXMLStreamReader(hidRequest.getBodyStream()));
+            while(xmlElementStream.hasNext()) {
+                element = xmlElementStream.next();
+                if (element.isStartElement() && xPathProcessor.startElement(element)) {
                     return true;
                 }
-                if (xmlStreamReader.isEndElement()) {
-                    xPathProcessor.endElement(new HIDStreamReaderWrapper(xmlStreamReader));
+                if (element.isEndElement()) {
+                    xPathProcessor.endElement(element);
                 }
             }
         } catch (XMLStreamException e) {
@@ -43,4 +44,5 @@ public class XPathMatcher implements HIDMatcher {
         }
         return false;
     }
+
 }

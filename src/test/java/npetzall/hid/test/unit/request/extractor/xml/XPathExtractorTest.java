@@ -16,7 +16,7 @@ public class XPathExtractorTest {
     @Test
     public void xPathExtractorElementNoNamespace() throws IOException {
         XPathExtractor xPathExtractor = new XPathExtractor();
-        xPathExtractor.xpath("/exchange/request/reverse/message","message");
+        xPathExtractor.xpath("/exchange/request/reverse/message/text()","message");
         DummyRequest dummyRequest = new DummyRequest()
                 .request(TestUtil.readURLToByteArray(
                         TestUtil.getResourceURL("/matchers/QNameMatcherReverse.xml")));
@@ -28,7 +28,7 @@ public class XPathExtractorTest {
     @Test
     public void xPathExtractorElementWithNamespace() throws IOException {
         XPathExtractor xPathExtractor = new XPathExtractor(new NamespaceMap().namespace("nohid","http://npetzall/nohid"));
-        xPathExtractor.xpath("/exchange/request/reverse/nohid:message","message");
+        xPathExtractor.xpath("/exchange/request/reverse/nohid:message/text()","message");
         DummyRequest dummyRequest = new DummyRequest()
                 .request(TestUtil.readURLToByteArray(
                         TestUtil.getResourceURL("/matchers/QNameMatcherReverse.xml")));

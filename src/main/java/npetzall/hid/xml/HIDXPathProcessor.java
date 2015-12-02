@@ -1,6 +1,6 @@
 package npetzall.hid.xml;
 
-import npetzall.hid.api.xml.HIDXmlElement;
+import npetzall.hid.api.xml.HIDXMLElement;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +32,7 @@ public class HIDXPathProcessor {
         }
     }
 
-    public boolean startElement(HIDXmlElement hidXmlElement) {
+    public boolean startElement(HIDXMLElement hidXmlElement) {
         matches.clear();
         for(HIDXPath hidxPath : xpaths) {
             if(hidxPath.startElement(hidXmlElement)) {
@@ -46,7 +46,7 @@ public class HIDXPathProcessor {
         return matches;
     }
 
-    public boolean endElement(HIDXmlElement hidXmlElement) {
+    public boolean endElement(HIDXMLElement hidXmlElement) {
         matches.clear();
         for(HIDXPath hidxPath : xpaths) {
             if(hidxPath.endElement(hidXmlElement)) {

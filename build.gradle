@@ -1,5 +1,6 @@
 plugins {
     id "org.sonarqube" version "1.1"
+    id 'me.champeau.gradle.jmh' version '0.2.0'
 }
 
 group 'npetzall.hid'
@@ -11,6 +12,7 @@ apply plugin: 'jdepend'
 apply plugin: 'pmd'
 apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
+apply plugin: 'me.champeau.gradle.jmh'
 
 sourceCompatibility = 1.7
 
@@ -78,6 +80,13 @@ tasks.withType(Pmd) {
         xml.enabled = false
         html.enabled = true
     }
+}
+
+jmh {
+    jmhVersion = '1.9.3'
+    failOnError = true
+    benchmarkMode = 'avgt'
+    profilers = ['stack']
 }
 
 task wrapper(type: Wrapper) {

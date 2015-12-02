@@ -1,6 +1,6 @@
 package npetzall.hid.test.unit.xml;
 
-import npetzall.hid.test.DummyXmlElement;
+import npetzall.hid.test.DummyStartXMLElement;
 import npetzall.hid.xml.HIDXPathPart;
 import org.testng.annotations.Test;
 
@@ -14,14 +14,14 @@ public class HIDXPathPartTest {
     @Test
     public void canMatchElement() {
         HIDXPathPart hidxPathPart = HIDXPathPart.element("","message");
-        DummyXmlElement xmlElement = new DummyXmlElement("message");
+        DummyStartXMLElement xmlElement = new DummyStartXMLElement("message");
         assertThat(hidxPathPart.matches(xmlElement)).isTrue();
     }
 
     @Test
     public void canMatchElementWithNamespace() {
         HIDXPathPart hidxPathPart = HIDXPathPart.element("http://npetzall/hid","message");
-        DummyXmlElement xmlElement = new DummyXmlElement("http://npetzall/hid","message");
+        DummyStartXMLElement xmlElement = new DummyStartXMLElement("http://npetzall/hid","message");
         assertThat(hidxPathPart.matches(xmlElement)).isTrue();
     }
 }
