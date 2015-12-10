@@ -18,7 +18,10 @@ public class XMLElementBuilder {
     }
 
     public void setText(String text) {
-        this.text = text;
+        if (text.trim().isEmpty()) {
+            return;
+        }
+        this.text = text.trim();
     }
 
     public void addAttribute(QName name, String value) {

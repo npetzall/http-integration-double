@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HIDXPath {
+
+    private static Pattern predicateOrIndexPattern = Pattern.compile("\\[(?<requirement>.*)\\]");
 
     private final String xPathString;
     private List<HIDXPathPart> hidxPathPartList = new ArrayList<>();
@@ -29,18 +33,29 @@ public class HIDXPath {
         }
         for(String pathPart : pathParts) {
             String namespace = "*";
-            String elementOrAttribute = pathPart;
+            String localPart= pathPart;
             if(pathPart.contains(":")) {
                 String[] tokens = pathPart.split(":",2);
                 namespace = namespaceMap.get(tokens[0]);
-                elementOrAttribute = tokens[1];
+                localPart = tokens[1];
             }
-            if(elementOrAttribute.charAt(0) == '@') {
-                attributePart = HIDXPathPart.attribute(namespace, elementOrAttribute.substring(1));
-            } else if ("text()".equals(elementOrAttribute)) {
+            if(localPart.charAt(0) == '@') {
+                attributePart = HIDXPathPart.attribute(namespace, localPart.substring(1));
+            } else if ("text()".equals(localPart)) {
                 textPart = HIDXPathPart.text();
             } else {
-                hidxPathPartList.add(HIDXPathPart.element(namespace, elementOrAttribute));
+                Matcher matcher;
+                if((matcher = predicateOrIndexPattern.matcher(localPart)).find()) {
+                    String preidcateOrIndex = matcher.group("requirement");
+                    localPart = localPart.replace("["+preidcateOrIndex+"]","");
+                    if (preidcateOrIndex.matches("\\d+")) {
+                        hidxPathPartList.add(HIDXPathPart.elementWithIndex(namespace,localPart,Integer.parseInt(preidcateOrIndex)));
+                    } else {
+                        hidxPathPartList.add(HIDXPathPart.elementWithPredicate(namespace, localPart, preidcateOrIndex));
+                    }
+                } else {
+                    hidxPathPartList.add(HIDXPathPart.element(namespace, localPart));
+                }
             }
         }
     }
